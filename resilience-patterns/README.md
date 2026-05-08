@@ -20,6 +20,9 @@ Prevents a system from repeatedly trying to execute an operation that's likely t
 - **Open**: Requests fail immediately without calling the service.
 - **Half-Open**: A limited number of test requests are allowed to check if the service has recovered.
 
+> [!TIP]
+> [Read the full guide on Circuit Breaker Patterns](../infrastructure-ops/circuit-breaker-patterns.md)
+
 ---
 
 ## 2. Bulkhead Pattern

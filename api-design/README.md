@@ -50,6 +50,9 @@ gRPC is a modern open-source high-performance Remote Procedure Call (RPC) framew
 - **URL Versioning**: `/v1/users`
 - **Header Versioning**: `Accept: application/vnd.myapi.v1+json`
 
+> [!TIP]
+> [Read the full guide on API Versioning Strategies](../infrastructure-ops/api-versioning.md)
+
 ### Error Handling
 - Use standard HTTP Status Codes (`200 OK`, `201 Created`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `500 Internal Server Error`).
 - Provide meaningful error messages in the response body.

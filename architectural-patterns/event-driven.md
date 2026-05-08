@@ -16,6 +16,8 @@ A software architecture paradigm promoting the production, detection, consumptio
 
 ## Event Sourcing
 Instead of storing just the current state of data in a domain, use an append-only store to record the full series of actions taken on that data. The current state can be reconstructed by replaying the events.
+> [!TIP]
+> [Read the full guide on Event Sourcing Patterns](../infrastructure-ops/event-sourcing.md)
 
 ## Pros and Cons
 | Pros | Cons |

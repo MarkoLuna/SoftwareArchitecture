@@ -16,7 +16,7 @@ Welcome to the Infrastructure & Ops section. This folder contains documentation 
 
 ---
 
-## 📝 Planned Topics (TODO)
+## 📝 Planned Topics
 
 The following topics are planned for future documentation:
 

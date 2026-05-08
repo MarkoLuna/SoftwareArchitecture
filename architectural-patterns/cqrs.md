@@ -47,6 +47,9 @@ While not required, CQRS is often used with **Event Sourcing**.
 - The write model is an append-only log of events.
 - The read model is a "projections" of those events into a queryable format (e.g., a SQL table or an Elasticsearch index).
 
+> [!TIP]
+> [Read the full guide on Event Sourcing Patterns](../infrastructure-ops/event-sourcing.md)
+
 ---
 
 ## 5. Pros and Cons
