@@ -30,3 +30,12 @@ Welcome to the **Software Architecture Documentation** repository. This project 
 | [🔒 Security Patterns](./security/README.md) | Best practices for AuthN, AuthZ, and OWASP. |
 | [🏷️ Versioning & Workflow](./versioning/README.md) | Strategies for versioning and commit standards. |
 | [🧪 Testing Strategies](./testing-strategies/README.md) | Ensuring quality and reliability across the stack. |
+
+---
+
+## 💻 Language Specific
+
+| Topic | Description |
+| :--- | :--- |
+| [☕ Java Upgrades](./language-guides/java-upgrades.md) | Significant changes from JDK 8 to JDK 21. |
+| [🐹 Go Upgrades](./language-guides/go-upgrades.md) | Key features and philosophy from 1.11 to 1.22. |
