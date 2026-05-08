@@ -75,42 +75,42 @@ Clean code is:
 
 ❌ Bad
 
-```js
-let d;
+```java
+int d;
 ```
 
 ✅ Good
 
-```js
-let elapsedTimeInDays;
+```java
+int elapsedTimeInDays;
 ```
 
 ### Functions
 
 ❌ Bad
 
-```js
-function calc(x, y) {}
+```java
+public void calc(int x, int y) {}
 ```
 
 ✅ Good
 
-```js
-function calculateMonthlyInterest(principal, rate) {}
+```java
+public void calculateMonthlyInterest(double principal, double rate) {}
 ```
 
 ### Classes
 
 ❌ Bad
 
-```js
+```java
 class Data {}
 ```
 
 ✅ Good
 
-```js
-class CustomerRepository {}
+```java
+class UserAccount {}
 ```
 
 ## Naming Rules
@@ -149,14 +149,14 @@ Avoid long parameter lists.
 
 ## Bad Example
 
-```js
-function save(user, isAdmin, sendEmail, logAction) {}
+```java
+public void save(User user, boolean isAdmin, boolean sendEmail, boolean logAction) {}
 ```
 
 ## Better Example
 
-```js
-function saveUser(user) {}
+```java
+public void saveUser(User user) {}
 ```
 
 ## Additional Guidelines
@@ -192,7 +192,7 @@ Code should explain itself whenever possible.
 
 ## Bad Example
 
-```js
+```java
 // Increment i
 i++;
 ```
@@ -201,7 +201,7 @@ i++;
 
 Use expressive code instead.
 
-```js
+```java
 currentIndex++;
 ```
 
@@ -224,20 +224,22 @@ currentIndex++;
 
 ## Example Structure
 
-```js
-class UserService {
-  constructor(repository) {
-    this.repository = repository;
-  }
+```java
+public class UserService {
+    private final UserRepository repository;
 
-  save(user) {
-    this.validate(user);
-    this.repository.save(user);
-  }
+    public UserService(UserRepository repository) {
+        this.repository = repository;
+    }
 
-  validate(user) {
-    // validation logic
-  }
+    public void save(User user) {
+        validate(user);
+        repository.save(user);
+    }
+
+    private void validate(User user) {
+        // validation logic
+    }
 }
 ```
 
@@ -256,13 +258,13 @@ An object should not know internal details of another object.
 
 ## Avoid
 
-```js
+```java
 user.getAddress().getCity().getZipCode();
 ```
 
 ## Prefer
 
-```js
+```java
 user.getZipCode();
 ```
 
@@ -286,15 +288,15 @@ Good encapsulation:
 
 ## Bad Example
 
-```js
+```java
 if (user == null) {
-  return -1;
+    return -1;
 }
 ```
 
 ## Better Example
 
-```js
+```java
 throw new UserNotFoundException();
 ```
 
@@ -319,17 +321,17 @@ A class should have only one reason to change.
 
 ## Bad Example
 
-```js
+```java
 class UserManager {
-  saveUser() {}
-  sendEmail() {}
-  generateReport() {}
+    public void saveUser() {}
+    public void sendEmail() {}
+    public void generateReport() {}
 }
 ```
 
 ## Better Example
 
-```js
+```java
 class UserRepository {}
 class EmailService {}
 class ReportGenerator {}
@@ -359,12 +361,11 @@ class ReportGenerator {}
 
 ## Test Example
 
-```js
-describe("Calculator", () => {
-  it("adds two numbers correctly", () => {
-    expect(add(2, 3)).toBe(5);
-  });
-});
+```java
+@Test
+void addsTwoNumbersCorrectly() {
+    assertEquals(5, calculator.add(2, 3));
+}
 ```
 
 ## Key Idea
@@ -389,18 +390,18 @@ Duplication increases:
 
 ❌ Duplicated logic
 
-```js
-const total = price * quantity;
-const tax = total * 0.16;
+```java
+double total = price * quantity;
+double tax = total * 0.16;
 ```
 
 Repeated elsewhere again.
 
 ✅ Better
 
-```js
-function calculateTax(total) {
-  return total * 0.16;
+```java
+public double calculateTax(double total) {
+    return total * 0.16;
 }
 ```
 
@@ -419,16 +420,16 @@ Complexity is the enemy of reliability and maintainability.
 ## Example
 
 ❌ Over-engineered
-```javascript
-function isEven(number) {
-  return number.toString(2).split('').reverse()[0] === '0';
+```java
+public boolean isEven(int number) {
+    return Integer.toBinaryString(number).endsWith("0");
 }
 ```
 
 ✅ Simple
-```javascript
-function isEven(number) {
-  return number % 2 === 0;
+```java
+public boolean isEven(int number) {
+    return number % 2 == 0;
 }
 ```
 
@@ -449,18 +450,18 @@ A programmer should not add functionality until deemed necessary.
 ## Example
 
 ❌ Premature complexity
-```javascript
+```java
 // Adding support for multiple currencies even if the client only uses USD
-function convertCurrency(amount, currency = 'USD') {
-  const rates = fetchRates(); // Complex logic for future use
-  return amount * rates[currency];
+public double convertCurrency(double amount, String currency) {
+    double rate = fetchRate(currency); // Complex logic for future use
+    return amount * rate;
 }
 ```
 
 ✅ Simple and focused
-```javascript
-function getAmount(amount) {
-  return amount; // Just handle what is needed now
+```java
+public double getAmount(double amount) {
+    return amount; // Just handle what is needed now
 }
 ```
 
@@ -468,38 +469,10 @@ function getAmount(amount) {
 
 # 13. SOLID Principles
 
-## S — Single Responsibility Principle
+The foundation of object-oriented design and dependency management.
 
-One class = one responsibility.
-
----
-
-## O — Open/Closed Principle
-
-Software should be:
-
-- Open for extension
-- Closed for modification
-
----
-
-## L — Liskov Substitution Principle
-
-Subclasses should replace base classes safely.
-
----
-
-## I — Interface Segregation Principle
-
-Prefer small, focused interfaces.
-
----
-
-## D — Dependency Inversion Principle
-
-Depend on abstractions, not implementations.
-
----
+> [!TIP]
+> [Read our dedicated SOLID Principles Guide](../solid-principles/README.md) for deep dives and multi-language examples (Java, Go, Python).
 
 # 14. GRASP Patterns
 
@@ -536,13 +509,13 @@ GRASP consists of guidelines for assigning responsibility to classes and objects
 
 ## Example of a Code Smell
 
-```js
-if (user.type === "admin") {
-  // admin logic
-} else if (user.type === "editor") {
-  // editor logic
-} else if (user.type === "guest") {
-  // guest logic
+```java
+if (user.getType().equals("ADMIN")) {
+    // admin logic
+} else if (user.getType().equals("EDITOR")) {
+    // editor logic
+} else if (user.getType().equals("GUEST")) {
+    // guest logic
 }
 ```
 
@@ -597,14 +570,14 @@ Refactor continuously.
 
 ❌ Shared mutable state
 
-```js
+```java
 counter++;
 ```
 
 ✅ Safer approach
 
-```js
-const updatedCounter = counter + 1;
+```java
+int updatedCounter = counter + 1;
 ```
 
 ---

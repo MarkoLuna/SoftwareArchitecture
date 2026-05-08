@@ -69,17 +69,30 @@ Big O notation is used to describe the efficiency of an algorithm in terms of ti
 ---
 
 ## 📊 Sorting Efficiency Comparison
+
+### Algorithm Complexity Table
+
+| Algorithm | Best Case | Average Case | Worst Case | Space Complexity | Stable |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Quicksort** | O(n log n) | O(n log n) | O(n²) | O(log n) | No |
+| **Mergesort** | O(n log n) | O(n log n) | O(n log n) | O(n) | Yes |
+| **Heapsort** | O(n log n) | O(n log n) | O(n log n) | O(1) | No |
+| **Bubble Sort** | O(n) | O(n²) | O(n²) | O(1) | Yes |
+| **Insertion Sort** | O(n) | O(n²) | O(n²) | O(1) | Yes |
+| **Selection Sort** | O(n²) | O(n²) | O(n²) | O(1) | No |
+
+### Big O Performance Zones
+
 ```mermaid
-graph LR
-    Input[Input Size N] --> O1[O 1]
-    Input --> OlogN[O log N]
-    Input --> On[O n]
-    Input --> OnlogN[O n log N]
-    Input --> On2[O n^2]
+graph TD
+    Excellent[Excellent: O 1, O log n] --> Good[Good: O n]
+    Good --> Fair[Fair: O n log n]
+    Fair --> Bad[Bad: O n^2]
+    Bad --> Horrible[Horrible: O 2^n, O n!]
     
-    style O1 fill:#d4edda
-    style OlogN fill:#d4edda
-    style On fill:#fff3cd
-    style OnlogN fill:#fff3cd
-    style On2 fill:#f8d7da
+    style Excellent fill:#d4edda,stroke:#28a745
+    style Good fill:#e2f0d9,stroke:#71af48
+    style Fair fill:#fff3cd,stroke:#ffc107
+    style Bad fill:#f8d7da,stroke:#dc3545
+    style Horrible fill:#f5c6cb,stroke:#721c24
 ```

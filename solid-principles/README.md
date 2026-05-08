@@ -18,29 +18,108 @@ The foundation of object-oriented design and dependency management.
 
 ### ❌ Bad Example
 A single class handling user data, database persistence, and email notifications.
-```javascript
-class User {
-  constructor(name) { this.name = name; }
-  saveToDatabase() { /* ... */ }
-  sendWelcomeEmail() { /* ... */ }
+
+<details>
+<summary>☕ Java</summary>
+
+```java
+public class User {
+    private String name;
+    public User(String name) { this.name = name; }
+    public void saveToDatabase() { /* ... */ }
+    public void sendWelcomeEmail() { /* ... */ }
 }
 ```
+</details>
+
+<details>
+<summary>🐹 Go</summary>
+
+```go
+type User struct {
+    Name string
+}
+
+func (u *User) SaveToDatabase() { /* ... */ }
+func (u *User) SendWelcomeEmail() { /* ... */ }
+```
+</details>
+
+<details>
+<summary>🐍 Python</summary>
+
+```python
+class User:
+    def __init__(self, name):
+        self.name = name
+    
+    def save_to_database(self):
+        # Logic to save to DB
+        pass
+    
+    def send_welcome_email(self):
+        # Logic to send email
+        pass
+```
+</details>
 
 ### ✅ Good Example
-Responsibilities are split into specialized classes.
-```javascript
-class User {
-  constructor(name) { this.name = name; }
+Responsibilities are split into specialized components.
+
+<details>
+<summary>☕ Java</summary>
+
+```java
+public class User {
+    private String name;
+    public User(String name) { this.name = name; }
 }
 
-class UserRepository {
-  save(user) { /* ... */ }
+public class UserRepository {
+    public void save(User user) { /* ... */ }
 }
 
-class EmailService {
-  sendWelcome(user) { /* ... */ }
+public class EmailService {
+    public void sendWelcome(User user) { /* ... */ }
 }
 ```
+</details>
+
+<details>
+<summary>🐹 Go</summary>
+
+```go
+type User struct {
+    Name string
+}
+
+type UserRepository struct {}
+func (r *UserRepository) Save(u User) { /* ... */ }
+
+type EmailService struct {}
+func (e *EmailService) SendWelcome(u User) { /* ... */ }
+```
+</details>
+
+<details>
+<summary>🐍 Python</summary>
+
+```python
+class User:
+    def __init__(self, name):
+        self.name = name
+
+class UserRepository:
+    def save(self, user):
+        # Logic to save to DB
+        pass
+
+class EmailService:
+    def send_welcome(self, user):
+        # Logic to send email
+        pass
+```
+</details>
 
 ---
 
@@ -48,31 +127,116 @@ class EmailService {
 > Software entities should be open for extension, but closed for modification.
 
 ### ❌ Bad Example
-Adding a new shape requires modifying the `AreaCalculator` class.
-```javascript
-class AreaCalculator {
-  calculate(shape) {
-    if (shape.type === 'square') return shape.size ** 2;
-    if (shape.type === 'circle') return Math.PI * (shape.radius ** 2);
-  }
+Adding a new shape requires modifying the calculator.
+
+<details>
+<summary>☕ Java</summary>
+
+```java
+public class AreaCalculator {
+    public double calculate(Object shape) {
+        if (shape instanceof Square) {
+            return ((Square)shape).size * ((Square)shape).size;
+        } else if (shape instanceof Circle) {
+            return Math.PI * ((Circle)shape).radius * ((Circle)shape).radius;
+        }
+        return 0;
+    }
 }
 ```
+</details>
+
+<details>
+<summary>🐹 Go</summary>
+
+```go
+func CalculateArea(shape interface{}) float64 {
+    switch s := shape.(type) {
+    case Square:
+        return s.Size * s.Size
+    case Circle:
+        return math.Pi * s.Radius * s.Radius
+    }
+    return 0
+}
+```
+</details>
+
+<details>
+<summary>🐍 Python</summary>
+
+```python
+class AreaCalculator:
+    def calculate(self, shape):
+        if isinstance(shape, Square):
+            return shape.size ** 2
+        elif isinstance(shape, Circle):
+            return math.pi * (shape.radius ** 2)
+```
+</details>
 
 ### ✅ Good Example
 New shapes can be added without changing existing logic.
-```javascript
-class Square {
-  calculateArea() { return this.size ** 2; }
+
+<details>
+<summary>☕ Java</summary>
+
+```java
+public interface Shape {
+    double calculateArea();
 }
 
-class Circle {
-  calculateArea() { return Math.PI * (this.radius ** 2); }
+public class Square implements Shape {
+    public double size;
+    public double calculateArea() { return size * size; }
 }
 
-class AreaCalculator {
-  calculate(shape) { return shape.calculateArea(); }
+public class AreaCalculator {
+    public double calculate(Shape shape) { return shape.calculateArea(); }
 }
 ```
+</details>
+
+<details>
+<summary>🐹 Go</summary>
+
+```go
+type Shape interface {
+    CalculateArea() float64
+}
+
+type Square struct { Size float64 }
+func (s Square) CalculateArea() float64 { return s.Size * s.Size }
+
+type AreaCalculator struct{}
+func (a AreaCalculator) Calculate(s Shape) float64 {
+    return s.CalculateArea()
+}
+```
+</details>
+
+<details>
+<summary>🐍 Python</summary>
+
+```python
+from abc import ABC, abstractmethod
+
+class Shape(ABC):
+    @abstractmethod
+    def calculate_area(self):
+        pass
+
+class Square(Shape):
+    def __init__(self, size):
+        self.size = size
+    def calculate_area(self):
+        return self.size ** 2
+
+class AreaCalculator:
+    def calculate(self, shape: Shape):
+        return shape.calculate_area()
+```
+</details>
 
 ---
 
@@ -80,27 +244,100 @@ class AreaCalculator {
 > Derived classes must be substitutable for their base classes.
 
 ### ❌ Bad Example
-`Ostrich` breaks the expectation that all birds can fly.
-```javascript
-class Bird {
-  fly() { /* ... */ }
+Breaking expectations of the base type.
+
+<details>
+<summary>☕ Java</summary>
+
+```java
+public class Bird {
+    public void fly() { /* ... */ }
 }
 
-class Ostrich extends Bird {
-  fly() { throw new Error("I can't fly!"); }
+public class Ostrich extends Bird {
+    @Override
+    public void fly() { throw new UnsupportedOperationException(); }
 }
 ```
+</details>
+
+<details>
+<summary>🐹 Go</summary>
+
+```go
+type Bird struct{}
+func (b Bird) Fly() { /* ... */ }
+
+type Ostrich struct {
+    Bird // Embedding
+}
+func (o Ostrich) Fly() { panic("can't fly") }
+```
+</details>
+
+<details>
+<summary>🐍 Python</summary>
+
+```python
+class Bird:
+    def fly(self):
+        pass
+
+class Ostrich(Bird):
+    def fly(self):
+        raise Exception("Can't fly")
+```
+</details>
 
 ### ✅ Good Example
 The hierarchy correctly reflects capabilities.
-```javascript
-class Bird { /* ... */ }
-class FlyingBird extends Bird {
-  fly() { /* ... */ }
+
+<details>
+<summary>☕ Java</summary>
+
+```java
+public class Bird { /* ... */ }
+public abstract class FlyingBird extends Bird {
+    public abstract void fly();
+}
+public class Ostrich extends Bird { /* ... */ }
+```
+</details>
+
+<details>
+<summary>🐹 Go</summary>
+
+```go
+type Bird interface {
+    Eat()
 }
 
-class Ostrich extends Bird { /* ... */ }
+type FlyingBird interface {
+    Bird
+    Fly()
+}
+
+type Ostrich struct{}
+func (o Ostrich) Eat() { /* ... */ }
 ```
+</details>
+
+<details>
+<summary>🐍 Python</summary>
+
+```python
+class Bird:
+    def eat(self):
+        pass
+
+class FlyingBird(Bird):
+    def fly(self):
+        pass
+
+class Ostrich(Bird):
+    pass
+```
+</details>
 
 ---
 
@@ -108,25 +345,100 @@ class Ostrich extends Bird { /* ... */ }
 > Make fine-grained interfaces that are client-specific.
 
 ### ❌ Bad Example
-A simple printer is forced to implement `scan` and `fax` even if it doesn't support them.
-```javascript
-class MultiFunctionDevice {
-  print() {}
-  scan() {}
-  fax() {}
+Forcing implementation of unused methods.
+
+<details>
+<summary>☕ Java</summary>
+
+```java
+public interface MultiFunctionDevice {
+    void print();
+    void scan();
+}
+
+public class SimplePrinter implements MultiFunctionDevice {
+    public void print() { /* ... */ }
+    public void scan() { /* Unsupported */ }
 }
 ```
+</details>
+
+<details>
+<summary>🐹 Go</summary>
+
+```go
+type MultiFunctionDevice interface {
+    Print()
+    Scan()
+}
+
+type SimplePrinter struct{}
+func (s SimplePrinter) Print() { /* ... */ }
+func (s SimplePrinter) Scan() { panic("not supported") }
+```
+</details>
+
+<details>
+<summary>🐍 Python</summary>
+
+```python
+class MultiFunctionDevice:
+    def print(self): pass
+    def scan(self): pass
+
+class SimplePrinter(MultiFunctionDevice):
+    def print(self):
+        # logic
+        pass
+    def scan(self):
+        raise NotImplementedError()
+```
+</details>
 
 ### ✅ Good Example
-Interfaces are split so clients only implement what they need.
-```javascript
-class Printer { print() {} }
-class Scanner { scan() {} }
+Clients only implement what they need.
 
-class SimplePrinter extends Printer {
-  print() { /* logic */ }
+<details>
+<summary>☕ Java</summary>
+
+```java
+public interface Printer { void print(); }
+public interface Scanner { void scan(); }
+
+public class SimplePrinter implements Printer {
+    public void print() { /* ... */ }
 }
 ```
+</details>
+
+<details>
+<summary>🐹 Go</summary>
+
+```go
+type Printer interface { Print() }
+type Scanner interface { Scan() }
+
+type SimplePrinter struct{}
+func (s SimplePrinter) Print() { /* ... */ }
+```
+</details>
+
+<details>
+<summary>🐍 Python</summary>
+
+```python
+class Printer:
+    def print(self): pass
+
+class Scanner:
+    def scan(self): pass
+
+class SimplePrinter(Printer):
+    def print(self):
+        # logic
+        pass
+```
+</details>
 
 ---
 
@@ -134,25 +446,82 @@ class SimplePrinter extends Printer {
 > Depend on abstractions, not on concretions.
 
 ### ❌ Bad Example
-`UserLogic` is tightly coupled to a specific database implementation.
-```javascript
-class MySqlDatabase {
-  save(data) { /* ... */ }
-}
+Tight coupling to concrete implementations.
 
-class UserLogic {
-  constructor() {
-    this.db = new MySqlDatabase();
-  }
+<details>
+<summary>☕ Java</summary>
+
+```java
+public class UserLogic {
+    private MySqlDatabase db = new MySqlDatabase();
 }
 ```
+</details>
+
+<details>
+<summary>🐹 Go</summary>
+
+```go
+type UserLogic struct {
+    db MySqlDatabase // Concrete type
+}
+```
+</details>
+
+<details>
+<summary>🐍 Python</summary>
+
+```python
+class UserLogic:
+    def __init__(self):
+        self.db = MySqlDatabase()
+```
+</details>
 
 ### ✅ Good Example
-`UserLogic` depends on an abstraction (the database interface).
-```javascript
-class UserLogic {
-  constructor(database) {
-    this.db = database; // Can be MySQL, MongoDB, etc.
-  }
+Depending on an abstraction.
+
+<details>
+<summary>☕ Java</summary>
+
+```java
+public interface Database { void save(String data); }
+
+public class UserLogic {
+    private Database db;
+    public UserLogic(Database db) { this.db = db; }
 }
 ```
+</details>
+
+<details>
+<summary>🐹 Go</summary>
+
+```go
+type Database interface {
+    Save(data string)
+}
+
+type UserLogic struct {
+    db Database // Interface
+}
+
+func NewUserLogic(db Database) *UserLogic {
+    return &UserLogic{db: db}
+}
+```
+</details>
+
+<details>
+<summary>🐍 Python</summary>
+
+```python
+class Database(ABC):
+    @abstractmethod
+    def save(self, data): pass
+
+class UserLogic:
+    def __init__(self, db: Database):
+        self.db = db
+```
+</details>
