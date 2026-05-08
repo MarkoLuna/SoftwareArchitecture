@@ -45,4 +45,44 @@ An API Gateway is a server that is the single entry point into the system. It is
 - **Framework-specific**: Spring Cloud Gateway, Ocelot (.NET).
 
 ---
+
+## 📊 API Gateway Architecture Diagram
+```mermaid
+graph TD
+    Client[Client Applications]
+    
+    subgraph APIGateway[API Gateway Layer]
+        Auth[Authentication & Authorization]
+        Rate[Rate Limiting]
+        Route[Request Routing]
+        Cache[Caching Layer]
+        Log[Logging & Monitoring]
+        Transform[Protocol Translation]
+    end
+    
+    subgraph Microservices[Backend Microservices]
+        UserService[User Service]
+        OrderService[Order Service]
+        PaymentService[Payment Service]
+        NotificationService[Notification Service]
+    end
+    
+    Client --> APIGateway
+    APIGateway --> Auth
+    Auth --> Rate
+    Rate --> Route
+    Route --> Cache
+    Cache --> Log
+    Log --> Transform
+    
+    Transform --> UserService
+    Transform --> OrderService
+    Transform --> PaymentService
+    Transform --> NotificationService
+    
+    style APIGateway fill:#e1f5fe
+    style Microservices fill:#f3e5f5
+```
+
+---
 [⬅️ Back to Architectural Patterns](./README.md)

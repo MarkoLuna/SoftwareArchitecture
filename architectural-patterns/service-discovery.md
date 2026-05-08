@@ -41,4 +41,76 @@ A database containing the network locations of service instances. It must be hig
 - **Examples**: Consul, Etcd, Netflix Eureka, Zookeeper.
 
 ---
+
+## 📊 Service Discovery Architecture Diagrams
+
+### Client-Side Discovery
+```mermaid
+graph TD
+    Client[Client Application]
+    
+    subgraph ServiceRegistry[Service Registry]
+        Registry[(Service Database)]
+        Health[Health Checker]
+    end
+    
+    subgraph ServiceInstances[Service Instances]
+        Svc1[Service Instance 1]
+        Svc2[Service Instance 2]
+        Svc3[Service Instance 3]
+    end
+    
+    Client --> Registry
+    Registry --> Client
+    Client --> Svc1
+    Client --> Svc2
+    Client --> Svc3
+    
+    Svc1 -.-> Health
+    Svc2 -.-> Health
+    Svc3 -.-> Health
+    Health --> Registry
+    
+    style ServiceRegistry fill:#e8f5e8
+    style ServiceInstances fill:#fff3e0
+```
+
+### Server-Side Discovery
+```mermaid
+graph TD
+    Client[Client Application]
+    
+    subgraph LoadBalancer[Load Balancer]
+        LB[Load Balancer Logic]
+    end
+    
+    subgraph ServiceRegistry[Service Registry]
+        Registry[(Service Database)]
+        Health[Health Checker]
+    end
+    
+    subgraph ServiceInstances[Service Instances]
+        Svc1[Service Instance 1]
+        Svc2[Service Instance 2]
+        Svc3[Service Instance 3]
+    end
+    
+    Client --> LB
+    LB --> Registry
+    Registry --> LB
+    LB --> Svc1
+    LB --> Svc2
+    LB --> Svc3
+    
+    Svc1 -.-> Health
+    Svc2 -.-> Health
+    Svc3 -.-> Health
+    Health --> Registry
+    
+    style LoadBalancer fill:#e3f2fd
+    style ServiceRegistry fill:#e8f5e8
+    style ServiceInstances fill:#fff3e0
+```
+
+---
 [⬅️ Back to Architectural Patterns](./README.md)
