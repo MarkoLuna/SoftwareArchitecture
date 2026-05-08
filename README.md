@@ -17,6 +17,7 @@ Welcome to the **Software Architecture Documentation** repository. This project 
 | [⚡ Caching Strategies](./caching-strategies/README.md) | Optimization techniques for data access and speed. | 🟢 Ready |
 | [🎨 Design Patterns](./design-patterns/README.md) | Reusable solutions to common software design problems. | 🟢 Ready |
 | [✨ Clean Code](./clean-code/README.md) | Practices for writing readable and maintainable code. | 🟢 Ready |
+| [🧬 DSA](./data-structures-algorithms/README.md) | Fundamental data structures and algorithm analysis. | 🟢 Ready |
 | [🧼 Clean Architecture](./clean-architecture/README.md) | Structural design for decoupling and testability. | 🟢 Ready |
 | [🧩 Domain-Driven Design](./domain-driven-design/README.md) | Modeling complex business logic through domain focus. | 🟢 Ready |
 | [🧱 SOLID Principles](./solid-principles/README.md) | The foundation of object-oriented design. | 🟢 Ready |
