@@ -16,6 +16,8 @@ Welcome to the **Software Architecture Documentation** repository. This project 
 | [🧱 SOLID Principles](./solid-principles/README.md) | The foundation of object-oriented design. |
 | [🎨 Design Patterns](./design-patterns/README.md) | Reusable solutions to common software design problems. |
 | [📊 UML Diagrams](./uml-diagrams/README.md) | Visual modeling standards for software systems. |
+| [🔒 Concurrency](./concurrency-patterns/README.md) | Strategies for thread safety and resource synchronization. |
+| [⏳ Async Processing](./asynchronous-processing/README.md) | Patterns for non-blocking task execution and workflows. |
 | [🧼 Clean Architecture](./clean-architecture/README.md) | Structural design for decoupling and testability. |
 | [🧩 Domain-Driven Design](./domain-driven-design/README.md) | Modeling complex business logic through domain focus. |
 | [🏗️ Architectural Patterns](./architectural-patterns/README.md) | High-level strategies for system structure. |

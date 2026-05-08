@@ -55,9 +55,9 @@ Sets a maximum time limit for a request to complete. If the limit is reached, th
 ---
 
 ## 5. Rate Limiting & Throttling
-Controls the rate of traffic sent by a client or received by a service.
-- **Rate Limiting**: Hard limit on the number of requests in a time window.
-- **Throttling**: Gradually slowing down requests when the system is under heavy load.
+Controls the rate of traffic sent by a client or received by a service to protect the system from being overwhelmed.
+> [!TIP]
+> [Read the full guide on Rate Limiting Algorithms](./rate-limiting.md)
 
 ---
 

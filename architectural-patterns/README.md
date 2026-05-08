@@ -37,7 +37,9 @@ A software architecture paradigm promoting the production, detection, consumptio
 A cloud-computing execution model in which the cloud provider allocates machine resources on demand, taking care of the servers on behalf of their customers.
 
 ## CQRS (Command Query Responsibility Segregation)
-An architectural pattern that separates read and update operations for a data store. Implementing CQRS in your application can maximize its performance, scalability, and security.
+An architectural pattern that separates read and update operations for a data store to maximize performance, scalability, and security.
+> [!TIP]
+> [Read the full guide on CQRS](./cqrs.md)
 
 ## Saga Pattern
 A failure management pattern that helps establish consistency in distributed applications and coordinates transactions between multiple microservices to maintain data integrity. It uses a sequence of local transactions and compensating transactions for rollback.
