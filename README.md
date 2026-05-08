@@ -30,6 +30,7 @@ Welcome to the **Software Architecture Documentation** repository. This project 
 | [🔒 Security Patterns](./security/README.md) | Best practices for AuthN, AuthZ, and OWASP. |
 | [🏷️ Versioning & Workflow](./versioning/README.md) | Strategies for versioning and commit standards. |
 | [🧪 Testing Strategies](./testing-strategies/README.md) | Ensuring quality and reliability across the stack. |
+| [🗄️ Data & Storage](./data-storage/README.md) | Database design, indexing, partitioning, and replication. |
 | [🛠️ Infrastructure & Ops](./infrastructure-ops/README.md) | Best practices for building, deploying, monitoring, and scaling. |
 
 ---

@@ -9,6 +9,7 @@ Data structures are ways of organizing and storing data so that they can be acce
 2. [Core Data Structures](#2-core-data-structures)
 3. [Core Algorithms](#3-core-algorithms)
 4. [Problem Solving Strategies](#4-problem-solving-strategies)
+5. [Web Resources & Visualizers](#5-web-resources--visualizers)
 
 ---
 
@@ -96,3 +97,23 @@ graph TD
     style Bad fill:#f8d7da,stroke:#dc3545
     style Horrible fill:#f5c6cb,stroke:#721c24
 ```
+
+---
+
+## 5. Web Resources & Visualizers
+### Interactive Visualizers
+- **[VisuAlgo](https://visualgo.net/)**: Visualising data structures and algorithms through interactive animation.
+- **[Data Structure Visualizations (USF)](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html)**: Excellent interactive animations for trees, graphs, and sorting algorithms.
+- **[Algorithm Visualizer](https://algorithm-visualizer.org/)**: An interactive online platform that visualizes algorithms directly from source code.
+
+### Reference Implementations & Practice
+- **[GeeksforGeeks DSA](https://www.geeksforgeeks.org/data-structures/)**: Comprehensive tutorials and reference implementations in C++, Java, Python, and more.
+- **[LeetCode Explore](https://leetcode.com/explore/)**: Platform for practicing data structures and algorithms with interactive learning cards.
+
+### Language-Specific GitHub Repositories
+- **☕ Java**:
+  - **[TheAlgorithms/Java](https://github.com/TheAlgorithms/Java)**: One of the largest open-source collections of algorithms implemented in Java.
+  - **[williamfiset/Algorithms](https://github.com/williamfiset/Algorithms)**: High-quality, well-tested Java implementations of complex data structures and algorithms by a former Google engineer.
+- **🐹 Go (Golang)**:
+  - **[TheAlgorithms/Go](https://github.com/TheAlgorithms/Go)**: Community-driven collection of algorithms and data structures implemented in Go.
+  - **[halfrost/LeetCode-Go](https://github.com/halfrost/LeetCode-Go)**: Extremely comprehensive repository of LeetCode solutions and data structures written in Go.
