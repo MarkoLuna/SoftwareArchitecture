@@ -19,6 +19,9 @@ A comprehensive glossary of architectural terms, patterns, and concepts used thr
 ### **API Gateway**
 A server that acts as a single entry point into a microservices architecture, handling routing, authentication, rate limiting, and protocol translation.
 
+### **Backpressure**
+A resilience mechanism in asynchronous systems (common in microservices) that allows a consumer to signal to a producer to slow down the rate of data transmission when overwhelmed.
+
 ### **Circuit Breaker**
 A design pattern that detects failures and prevents cascading failures by stopping requests to failing services after a threshold is reached.
 

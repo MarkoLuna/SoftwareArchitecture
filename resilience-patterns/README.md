@@ -11,6 +11,7 @@ Resilience is the ability of a system to handle and recover from failures. Fault
 4. [Timeout Pattern](#4-timeout-pattern)
 5. [Rate Limiting & Throttling](#5-rate-limiting--throttling)
 6. [Fallback Pattern](#6-fallback-pattern)
+7. [Backpressure Pattern](#7-backpressure-pattern)
 
 ---
 
@@ -70,6 +71,40 @@ Defines an alternative path or response to take when a service call fails.
 
 ---
 
+## 7. Backpressure Pattern
+A mechanism that allows a system receiving data to push back and signal the sender to slow down when the receiver is overwhelmed. This is a crucial resilience pattern in asynchronous and reactive microservices.
+
+### Why use Backpressure?
+- **Prevents Out-of-Memory (OOM) Errors**: If a fast producer sends data faster than a slow consumer can process it, queues fill up and crash the consumer.
+- **Improves System Stability**: It ensures systems fail gracefully instead of catastrophically under extreme load.
+
+### Implementation Strategies
+1. **Dropping Data**: The consumer drops new requests or messages when overwhelmed (e.g., shedding load).
+2. **Buffering**: Temporarily store spikes in traffic in a bounded queue (can only absorb short bursts).
+3. **Reactive Pull (Push-Pull)**: The consumer explicitly requests a specific number of items from the producer only when it has the capacity to process them (e.g., Reactive Streams, gRPC).
+
+### Backpressure (Reactive Pull) Diagram
+```mermaid
+sequenceDiagram
+    participant Producer
+    participant Consumer
+    
+    Consumer->>Producer: Request(n=2)
+    Note right of Producer: Producer is only allowed<br/>to send 2 items
+    Producer->>Consumer: onNext(Item 1)
+    Producer->>Consumer: onNext(Item 2)
+    
+    Note left of Consumer: Consumer is busy processing...<br/>Producer must wait.
+    
+    Consumer->>Producer: Request(n=3)
+    Note right of Producer: Producer resumes sending
+    Producer->>Consumer: onNext(Item 3)
+    Producer->>Consumer: onNext(Item 4)
+    Producer->>Consumer: onNext(Item 5)
+```
+
+---
+
 ## ⚖️ Summary of Resilience Strategies
 
 | Pattern | Purpose |
@@ -80,3 +115,4 @@ Defines an alternative path or response to take when a service call fails.
 | **Timeout** | Release resources from stuck requests. |
 | **Rate Limiting** | Protect system from being overwhelmed. |
 | **Fallback** | Provide a "graceful degradation" experience. |
+| **Backpressure** | Signal producers to slow down to avoid overwhelming consumers. |

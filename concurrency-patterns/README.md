@@ -22,6 +22,22 @@ A Mutex is a locking mechanism used to synchronize access to a resource. Only on
 - **Workflow**: Lock -> Access Resource -> Unlock.
 - **Danger**: Forgetting to unlock (use `defer` in Go or `try-finally` in Java).
 
+**Example (Go)**:
+```go
+import "sync"
+
+type Counter struct {
+    mu sync.Mutex
+    v  map[string]int
+}
+
+func (c *Counter) Inc(key string) {
+    c.mu.Lock()
+    defer c.mu.Unlock() // Ensure unlock even if it panics
+    c.v[key]++
+}
+```
+
 ---
 
 ## 2. Read/Write Locks
@@ -29,6 +45,29 @@ A more granular lock that allows multiple threads to read a resource simultaneou
 - **Readers**: Multiple concurrent readers allowed if no writer is active.
 - **Writers**: Only one writer allowed, and no readers allowed while writing.
 - **Best for**: Resources that are read frequently but updated rarely.
+
+**Example (Java)**:
+```java
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+public class Cache {
+    private final ReadWriteLock lock = new ReentrantReadWriteLock();
+    private String data;
+
+    public String readData() {
+        lock.readLock().lock();
+        try { return data; } 
+        finally { lock.readLock().unlock(); }
+    }
+
+    public void writeData(String data) {
+        lock.writeLock().lock();
+        try { this.data = data; } 
+        finally { lock.writeLock().unlock(); }
+    }
+}
+```
 
 ---
 
@@ -63,6 +102,22 @@ A situation where two or more threads are blocked forever, waiting for each othe
 A semaphore maintains a set of permits. Threads "acquire" a permit to access a resource and "release" it when done.
 - **Binary Semaphore**: Equivalent to a Mutex (0 or 1).
 - **Counting Semaphore**: Allows a fixed number of concurrent accesses (e.g., limiting database connections).
+
+**Example (Python)**:
+```python
+import threading
+import time
+
+# Allow up to 3 threads to access the resource concurrently
+semaphore = threading.Semaphore(3)
+
+def access_resource(thread_id):
+    print(f"Thread {thread_id} waiting...")
+    with semaphore:
+        print(f"Thread {thread_id} acquired semaphore.")
+        time.sleep(2) # Simulate work
+        print(f"Thread {thread_id} releasing semaphore.")
+```
 
 ### Distributed Semaphores
 In a distributed system, a traditional in-memory semaphore doesn't work across multiple server instances. A distributed semaphore uses an external coordinator:
@@ -99,6 +154,27 @@ One or more threads (producers) create data and add it to a shared buffer, while
 ## 8. Thread Pool
 Maintains a pool of worker threads. Tasks are submitted to a queue and picked up by available threads.
 - **Benefit**: Reduces the overhead of thread creation/destruction and prevents the system from being overwhelmed by too many concurrent threads.
+
+**Example (Java)**:
+```java
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class ThreadPoolExample {
+    public static void main(String[] args) {
+        // Create a thread pool with 5 fixed threads
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+        
+        for (int i = 0; i < 10; i++) {
+            final int taskId = i;
+            executor.submit(() -> {
+                System.out.println("Executing task " + taskId + " by " + Thread.currentThread().getName());
+            });
+        }
+        executor.shutdown();
+    }
+}
+```
 
 ---
 

@@ -35,7 +35,7 @@ graph TD
         Business --> Data
     end
     
-    subgraph Database[(Database)]
+    subgraph Database [Database]
         DB[(Single Database)]
     end
     
@@ -66,7 +66,7 @@ graph TD
         NotificationService[Notification Service]
     end
     
-    subgraph Databases[(Databases)]
+    subgraph Databases [Databases]
         UserDB[(User DB)]
         OrderDB[(Order DB)]
         PaymentDB[(Payment DB)]
