@@ -13,6 +13,8 @@
 10. [Service Discovery](#service-discovery)
 11. [API Gateway](#api-gateway)
 12. [Data Mesh](./data-mesh.md)
+13. [Fan-Out Pattern](#fan-out-pattern)
+14. [Fan-In Pattern](#fan-in-pattern)
 
 ---
 
@@ -291,3 +293,91 @@ A server that acts as the single entry point into a microservices architecture.
 A decentralized sociotechnical paradigm for data architecture that shifts from a centralized, monolithic data platform to a distributed, domain-oriented approach. It treats data as a product and enables organizations to scale their data initiatives while maintaining agility and ownership.
 > [!TIP]
 > [Read the full guide on Data Mesh](./data-mesh.md)
+
+## Fan-Out Pattern
+A messaging topology where **one publisher sends a single message to an exchange or topic, and that message is delivered to multiple downstream consumers simultaneously** — each receiving their own independent copy. It decouples the producer from the consumers: neither side needs to know about the other.
+
+- **Exchange type used**: Fanout Exchange (RabbitMQ) or a topic with multiple subscriber groups (Kafka).
+- **Key property**: Every bound queue/subscriber gets the full message regardless of content.
+- **Classic use-cases**:
+  - An `order.placed` event triggers Email, SMS, Push Notification, and Analytics pipelines at the same time.
+  - A cache invalidation event must reach every application node.
+  - A configuration-change event must notify all running service instances.
+
+### Fan-Out Pattern Diagram
+```mermaid
+flowchart LR
+    P(["📤 Publisher\norder.placed"])
+
+    subgraph BROKER["Message Broker"]
+        EX{{"Fanout Exchange"}}
+    end
+
+    subgraph CONSUMERS["Independent Consumers"]
+        C1["📧 Email Service"]
+        C2["📱 SMS Service"]
+        C3["🔔 Push Notification Service"]
+        C4["📊 Analytics Pipeline"]
+    end
+
+    P -->|"publish once"| EX
+    EX -->|"copy"| C1
+    EX -->|"copy"| C2
+    EX -->|"copy"| C3
+    EX -->|"copy"| C4
+```
+
+### Fan-Out Trade-offs
+
+| Aspect | Detail |
+| :--- | :--- |
+| ✅ **Decoupling** | Producer is unaware of consumers; adding a new consumer requires zero producer changes. |
+| ✅ **Parallelism** | All consumers process the event concurrently, minimizing total latency. |
+| ⚠️ **Message amplification** | One message becomes N messages on the broker; monitor queue depth per consumer. |
+| ⚠️ **Slow consumers** | A backed-up consumer queue does not affect other queues, but its own processing delay accumulates. |
+| ❌ **No selective routing** | Every subscriber gets every message. Use a **Topic Exchange** with routing keys if filtering is needed. |
+
+---
+
+## Fan-In Pattern
+A messaging topology where **multiple independent producers all publish to the same destination** (queue, topic, or channel) and **a single consumer aggregates and processes all of them**. It is the logical complement of Fan-Out.
+
+- **Exchange type used**: Direct Exchange or a single shared topic (Kafka).
+- **Key property**: All messages converge on one processing point, regardless of their source.
+- **Classic use-cases**:
+  - Multiple microservices (Orders, Payments, Inventory) all emit audit events that a single Audit Service consumes.
+  - Multiple IoT sensors publish telemetry to one stream processor.
+  - Several upstream services feed results into one aggregation / reporting pipeline.
+
+### Fan-In Pattern Diagram
+```mermaid
+flowchart LR
+    subgraph PRODUCERS["Independent Producers"]
+        P1["🛒 Order Service"]
+        P2["💳 Payment Service"]
+        P3["📦 Inventory Service"]
+        P4["📡 IoT Sensor"]
+    end
+
+    subgraph BROKER["Message Broker"]
+        Q[/"aggregator.queue"/]
+    end
+
+    C(["🗂️ Audit / Aggregator Consumer"])
+
+    P1 -->|"audit.event"| Q
+    P2 -->|"audit.event"| Q
+    P3 -->|"audit.event"| Q
+    P4 -->|"telemetry.event"| Q
+    Q -->|"consume"| C
+```
+
+### Fan-In Trade-offs
+
+| Aspect | Detail |
+| :--- | :--- |
+| ✅ **Centralised processing** | One place to apply aggregation, deduplication, or enrichment logic. |
+| ✅ **Producer independence** | Producers are fully decoupled from each other and from the consumer. |
+| ⚠️ **Single consumer bottleneck** | If the consumer is slow, the queue grows. Scale with competing consumers in the same group. |
+| ⚠️ **Message ordering** | Messages from different producers are interleaved; ordering guarantees require partition keys (Kafka) or sequencing logic in the consumer. |
+| ❌ **Source attribution** | The consumer must inspect message metadata/headers to determine which producer sent a given message. |

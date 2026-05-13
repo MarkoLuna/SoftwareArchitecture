@@ -14,6 +14,8 @@ Concurrency is the ability of different parts or units of a program, algorithm, 
 7. [Producer-Consumer](#7-producer-consumer)
 8. [Thread Pool](#8-thread-pool)
 9. [Future and Promise](#9-future-and-promise)
+10. [Fan-Out](#10-fan-out)
+11. [Fan-In](#11-fan-in)
 
 ---
 
@@ -182,3 +184,226 @@ public class ThreadPoolExample {
 Synchronization constructs used to represent the result of an asynchronous operation that may not have completed yet.
 - **Promise**: A writable placeholder for the result.
 - **Future**: A read-only view of the result, allowing the caller to wait for or check the status of the operation.
+
+---
+
+## 10. Fan-Out
+A **pipeline pattern** where one goroutine (or thread) reads from an input source and distributes work across **multiple parallel worker goroutines**, each processing items concurrently. The goal is to maximise CPU utilisation for tasks that are independently parallelisable.
+
+- **When to use**: CPU-bound or I/O-bound tasks where individual items can be processed in any order (e.g., image resizing, HTTP calls, file processing).
+- **Key mechanism in Go**: Spawn N goroutines all reading from the same input channel. Since channels are goroutine-safe, the runtime naturally distributes work.
+
+### Fan-Out Diagram
+```mermaid
+flowchart TD
+    SRC(["Input Source"])
+    CH["📥 Input Channel"]
+
+    SRC -->|"send items"| CH
+
+    subgraph WORKERS["Worker Pool (Fan-Out)"]
+        W1["Worker 1"]
+        W2["Worker 2"]
+        W3["Worker N"]
+    end
+
+    CH -->|"item"| W1
+    CH -->|"item"| W2
+    CH -->|"item"| W3
+
+    W1 -->|"result"| RES(["Results / Output"])
+    W2 -->|"result"| RES
+    W3 -->|"result"| RES
+```
+
+**Example (Go)**:
+```go
+func fanOut(input <-chan int, workers int) []<-chan int {
+    channels := make([]<-chan int, workers)
+    for i := 0; i < workers; i++ {
+        // Each worker reads from the shared input channel
+        channels[i] = process(input)
+    }
+    return channels
+}
+
+func process(input <-chan int) <-chan int {
+    out := make(chan int)
+    go func() {
+        defer close(out)
+        for v := range input {
+            out <- v * v // simulate work
+        }
+    }()
+    return out
+}
+```
+
+**Example (Java)**:
+```java
+import java.util.List;
+import java.util.concurrent.*;
+
+public class FanOut {
+
+    /**
+     * Distributes a list of items across a fixed thread pool.
+     * Each item is processed concurrently by an independent worker.
+     */
+    public static List<CompletableFuture<Integer>> fanOut(
+            List<Integer> items, ExecutorService executor) {
+
+        return items.stream()
+                .map(item -> CompletableFuture.supplyAsync(
+                        () -> process(item), executor))
+                .toList();
+    }
+
+    /** Simulates a unit of work (e.g. I/O call, CPU computation). */
+    private static int process(int value) {
+        return value * value;
+    }
+
+    public static void main(String[] args) throws Exception {
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+        List<Integer> inputs = List.of(1, 2, 3, 4, 5);
+
+        List<CompletableFuture<Integer>> futures = fanOut(inputs, executor);
+
+        // Wait for all workers and collect results
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        futures.forEach(f -> System.out.println("Result: " + f.join()));
+
+        executor.shutdown();
+    }
+}
+```
+
+---
+
+## 11. Fan-In
+A **pipeline pattern** that is the complement of Fan-Out: it **merges multiple input channels into a single output channel**, allowing a downstream stage to consume results from all workers through one unified stream.
+
+- **When to use**: After a Fan-Out stage, to collect and process results in a single place (aggregation, ordering, deduplication).
+- **Key mechanism in Go**: Use a `sync.WaitGroup` to monitor all input goroutines and close the output channel only when all sources are exhausted.
+
+### Fan-In Diagram
+```mermaid
+flowchart TD
+    subgraph SOURCES["Multiple Sources (Fan-In)"]
+        W1["Worker 1"]
+        W2["Worker 2"]
+        W3["Worker N"]
+    end
+
+    MX["🔀 Multiplexer / Merge"]
+    OUT["📤 Output Channel"]
+    SINK(["Consumer / Aggregator"])
+
+    W1 -->|"result"| MX
+    W2 -->|"result"| MX
+    W3 -->|"result"| MX
+    MX --> OUT
+    OUT -->|"consume"| SINK
+```
+
+**Example (Go)**:
+```go
+import "sync"
+
+func fanIn(channels ...<-chan int) <-chan int {
+    merged := make(chan int)
+    var wg sync.WaitGroup
+
+    // Forward every value from each input channel into merged
+    forward := func(ch <-chan int) {
+        defer wg.Done()
+        for v := range ch {
+            merged <- v
+        }
+    }
+
+    wg.Add(len(channels))
+    for _, ch := range channels {
+        go forward(ch)
+    }
+
+    // Close merged once all sources are done
+    go func() {
+        wg.Wait()
+        close(merged)
+    }()
+
+    return merged
+}
+```
+
+**Example (Java)**:
+```java
+import java.util.List;
+import java.util.concurrent.*;
+
+public class FanIn {
+
+    /**
+     * Merges results from multiple CompletableFutures into a single
+     * BlockingQueue, which the aggregator drains sequentially.
+     */
+    public static <T> BlockingQueue<T> fanIn(
+            List<CompletableFuture<T>> futures) {
+
+        BlockingQueue<T> merged = new LinkedBlockingQueue<>();
+
+        // Each future, when done, drops its result into the shared queue
+        futures.forEach(f -> f.thenAccept(merged::offer));
+
+        return merged;
+    }
+
+    public static void main(String[] args) throws Exception {
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+
+        // Simulate three independent producers
+        List<CompletableFuture<String>> producers = List.of(
+                CompletableFuture.supplyAsync(() -> "Result from Service A", executor),
+                CompletableFuture.supplyAsync(() -> "Result from Service B", executor),
+                CompletableFuture.supplyAsync(() -> "Result from Service C", executor)
+        );
+
+        BlockingQueue<String> aggregated = fanIn(producers);
+
+        // Wait for all producers to finish, then drain the queue
+        CompletableFuture.allOf(producers.toArray(new CompletableFuture[0])).join();
+        aggregated.forEach(result -> System.out.println("Aggregated: " + result));
+
+        executor.shutdown();
+    }
+}
+```
+
+### Fan-Out → Fan-In Pipeline
+Fan-Out and Fan-In are almost always used **together** to form a complete parallel pipeline:
+
+```mermaid
+flowchart LR
+    GEN(["Generator"])
+    CH1["📥 Input Channel"]
+
+    subgraph FANOUT["Fan-Out"]
+        W1["Worker 1"]
+        W2["Worker 2"]
+        W3["Worker 3"]
+    end
+
+    MERGE["🔀 Fan-In Merge"]
+    OUT(["Aggregated Output"])
+
+    GEN --> CH1
+    CH1 --> W1
+    CH1 --> W2
+    CH1 --> W3
+    W1 --> MERGE
+    W2 --> MERGE
+    W3 --> MERGE
+    MERGE --> OUT
+```
