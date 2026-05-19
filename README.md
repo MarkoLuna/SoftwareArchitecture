@@ -23,6 +23,7 @@ Welcome to the **Software Architecture Documentation** repository. This project 
 | [🏗️ Architectural Patterns](./architectural-patterns/README.md) | High-level strategies for system structure. |
 | [🎡 Kafka Patterns](./kafka-patterns/README.md) | Event streaming and messaging architectures. |
 | [🔌 API Design](./api-design/README.md) | Standards for REST, GraphQL, and gRPC. |
+| [📡 Real-Time Comm](./real-time-communication/README.md) | Persistent & event-driven communication (WebSockets, SSE, Webhooks). |
 | [⚖️ Load Balancing](./load-balancing/README.md) | Algorithms for distributing traffic across servers. |
 | [⚡ Caching Strategies](./caching-strategies/README.md) | Optimization techniques for data access and speed. |
 | [🛡️ Resilience Patterns](./resilience-patterns/README.md) | Strategies for fault tolerance and system stability. |
