@@ -28,6 +28,7 @@ Welcome to the **Software Architecture Documentation** repository. This project 
 | [⚡ Caching Strategies](./caching-strategies/README.md) | Optimization techniques for data access and speed. |
 | [🛡️ Resilience Patterns](./resilience-patterns/README.md) | Strategies for fault tolerance and system stability. |
 | [☁️ Cloud-Native](./cloud-native/kubernetes.md) | Kubernetes orchestration, Pods, Controllers, and Services. |
+| [☁️ Modern Cloud Methodologies](./modern-cloud-methodologies/README.md) | 12-Factor App principles and Serverless Architectures (FaaS). |
 | [🔒 Security Patterns](./security/README.md) | Best practices for AuthN, AuthZ, and OWASP. |
 | [🏷️ Versioning & Workflow](./versioning/README.md) | Strategies for versioning and commit standards. |
 | [🧪 Testing Strategies](./testing-strategies/README.md) | Ensuring quality and reliability across the stack. |
