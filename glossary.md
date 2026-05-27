@@ -52,6 +52,11 @@ A cloud-computing execution model in which the cloud provider allocates machine 
 ### **Service Discovery**
 The process of automatically detecting devices and services on a computer network, allowing services to find each other dynamically without hardcoded IP addresses.
 
+example: 
+    - Spring Cloud Consul
+    - Spring Cloud Eureka
+    - Spring Cloud Zookeeper
+
 ### **Service Registry**
 A database containing the network locations of service instances that must be highly available and up-to-date.
 

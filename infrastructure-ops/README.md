@@ -13,6 +13,7 @@ Welcome to the Infrastructure & Ops section. This folder contains documentation 
 | [🪵 ELK Stack](./elk-stack.md) | Centralized logging with Elasticsearch, Logstash, and Kibana. |
 | [☁️ Infrastructure as Code](./infrastructure-as-code.md) | Managing infrastructure with tools like Terraform and Ansible. |
 | [📊 Metrics & Monitoring](./metrics-monitoring.md) | Observability using Prometheus, Grafana, and similar tools. |
+| [🔗 Service Mesh](./service-mesh.md) | Istio and Linkerd implementations for microservices communication. |
 
 ---
 
