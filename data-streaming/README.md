@@ -20,6 +20,7 @@ In modern system design, data is generated continuously by millions of sources (
    - [Apache Samza](#apache-samza)
 5. [Framework Comparison Matrix](#5-framework-comparison-matrix)
 6. [Streaming Architecture Topology](#6-streaming-architecture-topology)
+7. [📖 Deep Dive: Apache Spark & Hadoop](./spark-hadoop.md)
 
 ---
 
@@ -151,6 +152,8 @@ Dynamic, gap-based windows defined by periods of inactivity (inactivity gaps). T
   - 🔴 **Latency**: Higher latency compared to Flink (typically 10-100ms vs. Flink's sub-millisecond level).
   - 🟢 **Throughput**: Unmatched throughput when executing complex multi-stage computations or aggregations.
   - 🟢 **Unification**: Uses the identical SQL-based DataFrame/Dataset API as Spark Batch, making it exceptionally easy to write a single codebase that handles both real-time streaming and massive offline batch workloads.
+
+> 📖 **For a comprehensive deep-dive** into Spark's internals (RDDs, DAG execution, shuffle optimization, Catalyst optimizer) and the full Hadoop ecosystem (HDFS, MapReduce, YARN), see the companion document: [**Apache Spark & Hadoop Deep Dive**](./spark-hadoop.md).
 
 ---
 
