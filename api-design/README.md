@@ -42,6 +42,23 @@ gRPC is a modern open-source high-performance Remote Procedure Call (RPC) framew
 - **HTTP/2**: Leverages HTTP/2 for transport, enabling features like multiplexing and streaming.
 - **Strong Typing**: Generation of client/server stubs in multiple languages.
 
+### Comparison of REST, GraphQL, and gRPC
+
+| Feature | REST | GraphQL | gRPC |
+|---------|------|-----------|------|
+| **Protocol** | HTTP/1.1 | HTTP/1.1, HTTP/2 | HTTP/2 |
+| **Data Format** | JSON, XML | JSON | Protocol Buffers |
+| **Endpoint** | Multiple | Single (`/graphql`) | Single (`/`) |
+| **Typing** | Weak (runtime) | Strong (schema) | Strong (IDL) |
+| **Over-fetching** | Yes | No | No |
+| **Under-fetching** | Yes | No | No |
+| **Client Control** | No | Yes | Partial |
+| **Caching** | Built-in (HTTP) | Custom | Custom |
+| **Streaming** | Limited | Bidirectional | Bidirectional |
+| **Browser Support** | Excellent | Good | Limited |
+| **Tooling** | Mature | Good | Good |
+| **Use Cases** | Public APIs, Web Apps | Complex UIs, Mobile Apps | Microservices, Mobile Apps |
+
 ---
 
 ## 4. API Design Principles
