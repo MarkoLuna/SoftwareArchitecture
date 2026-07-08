@@ -1238,7 +1238,7 @@ graph TD
     
     style Excellent fill:#2d6a4f,stroke:#1b4332
     style Good fill:#52b788,stroke:#2d6a4f
-    style Fair fill:#ffdd4a,stroke:#d4a017
+    style Fair fill:#e09f3e,stroke:#b07a28
     style Bad fill:#f4845f,stroke:#d85c3a
     style Horrible fill:#c1121f,stroke:#780000
 ```
