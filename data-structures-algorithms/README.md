@@ -207,10 +207,53 @@ public class LRUCache {
 </details>
 
 > [!TIP]
-> **Java shortcut**: `java.util.LinkedHashMap` with `accessOrder = true` and an overridden `removeEldestEntry()` gives you an LRU cache in ~5 lines. The manual implementation above is used in **interviews** and **systems design** to demonstrate that you understand the underlying O(1) mechanics.
+> **Java shortcut**: `java.util.LinkedHashMap` with `accessOrder = true` and an overridden `removeEldestEntry()` gives you an LRU cache in ~5 lines. The manual implementation above is used in **interviews** and **systems design** to demonstrate that you understand the underlying O(1) mechanics. See the [LinkedHashMap Javadoc](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/LinkedHashMap.html).
 
 > [!NOTE]
-> For **thread-safe** LRU caches in production (e.g., shared across request threads), wrap operations in `synchronized` blocks or use `ConcurrentHashMap` + an `AtomicReference` head/tail approach, or reach for [Caffeine](https://github.com/ben-manes/caffeine) which implements a high-performance W-TinyLFU policy.
+> For **thread-safe** LRU caches in production (e.g., shared across request threads), wrap operations in `synchronized` blocks or use `java.util.concurrent.ConcurrentHashMap` + an `AtomicReference` head/tail approach, or reach for [Caffeine](https://github.com/ben-manes/caffeine) which implements a high-performance W-TinyLFU policy. See the [ConcurrentHashMap Javadoc](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html).
+
+---
+
+## 2.1 Java Collections Framework (JDK Implementations)
+
+Every abstract data structure in this section has a concrete implementation in `java.util` (or `java.util.concurrent`). The table below maps them with their key methods and behavior.
+
+### Core Collection Classes
+
+| Data Structure | JDK Class | Underlying Mechanism | Key Methods |
+| :--- | :--- | :--- | :--- |
+| Dynamic Array | [`java.util.ArrayList`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayList.html) | `Object[]` resizeable array | `add(e)` — appends to end<br>`add(i, e)` — inserts at index<br>`get(i)` — gets by index<br>`set(i, e)` — updates at index<br>`remove(i)` — removes by index |
+| Linked List | [`java.util.LinkedList`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/LinkedList.html) | Doubly-linked list | `addFirst(e)` — prepends<br>`addLast(e)` — appends<br>`get(i)` — gets by index<br>`set(i, e)` — updates at index<br>`removeFirst()` — removes head<br>`remove(i)` — removes by index |
+| Stack (LIFO) | [`java.util.ArrayDeque`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayDeque.html) — **preferred** | Circular array | `push(e)` — pushes to front<br>`pop()` — pops from front<br>`peek()` — views top |
+| Stack (LIFO) | [`java.util.Stack`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Stack.html) — legacy | Extends `Vector` (synchronized, slower) | `push(e)` — pushes to top<br>`pop()` — pops from top<br>`peek()` — views top |
+| Queue (FIFO) | [`java.util.ArrayDeque`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayDeque.html) — **preferred** | Circular array | `offer(e)` — enqueues at tail<br>`poll()` — dequeues from head<br>`peek()` — views head |
+| Queue (FIFO) | [`java.util.Queue`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Queue.html) interface / [`java.util.LinkedList`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/LinkedList.html) | Doubly-linked list | `offer(e)` — enqueues at tail<br>`poll()` — dequeues from head<br>`peek()` — views head |
+| Priority Queue | [`java.util.PriorityQueue`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/PriorityQueue.html) | Binary heap (min-heap) | `offer(e)` — inserts by priority<br>`poll()` — extracts smallest<br>`peek()` — views smallest |
+| Hash Table | [`java.util.HashMap`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.html) | Bucket array → tree on collisions (JEP 180) | `put(k, v)` — stores or updates key→value<br>`get(k)` — retrieves by key<br>`containsKey(k)` — checks key existence<br>`remove(k)` — removes by key |
+| Hash + Order | [`java.util.LinkedHashMap`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/LinkedHashMap.html) | HashMap + doubly-linked list | `put(k, v)` — stores or updates key→value (ordered)<br>`get(k)` — retrieves by key<br>`remove(k)` — removes by key<br>`removeEldestEntry()` — LRU eviction control |
+| Sorted Map | [`java.util.TreeMap`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/TreeMap.html) | Red-Black tree | `put(k, v)` — stores or updates sorted by key<br>`get(k)` — retrieves by key<br>`firstKey()` / `lastKey()` — smallest/largest<br>`subMap(k1, k2)` — key range view<br>`remove(k)` — removes by key |
+| Hash Set | [`java.util.HashSet`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashSet.html) | Backed by `HashMap` | `add(e)` — adds element<br>`contains(e)` — checks existence<br>`remove(e)` — removes element |
+| Sorted Set | [`java.util.TreeSet`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/TreeSet.html) | Backed by `TreeMap` (Red-Black tree) | `add(e)` — adds sorted<br>`first()` / `last()` — smallest/largest<br>`subSet(e1, e2)` — element range view<br>`remove(e)` — removes element |
+| Thread-safe Map | [`java.util.concurrent.ConcurrentHashMap`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html) | Segmented buckets + tree bins | `put(k, v)` — stores or updates (thread-safe)<br>`get(k)` — retrieves by key (thread-safe)<br>`remove(k)` — removes by key (thread-safe)<br>`computeIfAbsent(k, fn)` — atomic init |
+| Enum Map | [`java.util.EnumMap`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/EnumMap.html) | Array indexed by `ordinal()` | `put(k, v)` — stores or updates (O(1), no hashing)<br>`get(k)` — retrieves by key (O(1))<br>`remove(k)` — removes by key |
+| Bit Array | [`java.util.BitSet`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/BitSet.html) | `long[]` packed | `set(i)` — sets bit i<br>`get(i)` — gets bit i<br>`clear(i)` — clears bit i<br>`and/or/xor(other)` — bitwise ops |
+
+> [!NOTE]
+> `java.util.Stack` is a legacy class that extends `Vector` — every method is synchronized, which adds unnecessary overhead in single-threaded code. `java.util.ArrayDeque` is the modern **preferred** replacement for both LIFO and FIFO: faster, more memory-efficient, and backed by a circular array. `java.util.LinkedList` is an alternative for FIFO when you also need indexed access, but `ArrayDeque` has less per-element overhead.
+
+> [!TIP]
+> Despite the name, `java.util.ArrayDeque` works for **both** FIFO (`offer`/`poll`) and LIFO (`push`/`pop`). It is backed by a **circular array** — more cache-friendly and memory-efficient than `java.util.LinkedList`.
+
+### Utility Methods — [`java.util.Collections`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Collections.html)
+
+| Method | Description | Example Input | Output |
+| :--- | :--- | :--- | :--- |
+| `java.util.Collections.sort(list)` | sorts a list (TimSort). Accepts an optional `Comparator` for custom ordering | `sort(list, Comparator.reverseOrder())` // list = `[3, 1, 4, 1, 5]` | `[5, 4, 3, 1, 1]` |
+| `java.util.Collections.binarySearch(list, k)` | binary search O(log n); list must be sorted | `[1, 3, 5, 7, 9]`, `k=5` | returns index `2` |
+| `java.util.Collections.reverse(list)` | reverses element order | `[A, B, C]` | `[C, B, A]` |
+| `java.util.Collections.shuffle(list)` | randomly permutes elements | `[1, 2, 3, 4, 5]` | e.g. `[3, 5, 1, 4, 2]` |
+| `java.util.Collections.synchronizedMap(m)` | wraps a Map for thread-safe access | any `HashMap` | thread-safe view |
+| `java.util.Collections.unmodifiableList(l)` | wraps a List as read-only | any `ArrayList` | unmodifiable view; throws on mutation |
 
 ---
 
