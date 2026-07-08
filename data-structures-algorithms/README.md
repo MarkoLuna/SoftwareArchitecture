@@ -1236,11 +1236,11 @@ graph TD
     Fair --> Bad[Bad: O n^2]
     Bad --> Horrible[Horrible: O 2^n, O n!]
     
-    style Excellent fill:#d4edda,stroke:#28a745
-    style Good fill:#e2f0d9,stroke:#71af48
-    style Fair fill:#fff3cd,stroke:#ffc107
-    style Bad fill:#f8d7da,stroke:#dc3545
-    style Horrible fill:#f5c6cb,stroke:#721c24
+    style Excellent fill:#2d6a4f,stroke:#1b4332
+    style Good fill:#52b788,stroke:#2d6a4f
+    style Fair fill:#ffdd4a,stroke:#d4a017
+    style Bad fill:#f4845f,stroke:#d85c3a
+    style Horrible fill:#c1121f,stroke:#780000
 ```
 
 ---
