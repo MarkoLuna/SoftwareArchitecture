@@ -36,7 +36,14 @@ Welcome to the **Software Architecture Documentation** repository. This project 
 | [🛠️ Infrastructure & Ops](./infrastructure-ops/README.md) | Best practices for building, deploying, monitoring, and scaling. |
 | [🌊 Data Streaming](./data-streaming/README.md) | Real-time processing frameworks (Kafka Streams, Flink, Spark, Samza). |
 | [🔍 Search & Query](./search-query-optimization/README.md) | Search engines (Elasticsearch, Solr, Meilisearch, Algolia) & sync strategies. |
-| [🖥️ Frontend Arch](./frontend-architecture/README.md) | Rendering strategies (CSR, SSR, SSG, ISR) & state management patterns. |
+
+---
+
+## 🖥️ Frontend Architecture
+
+| Topic | Description |
+| :--- | :--- |
+| [🖥️ Frontend Arch](./frontend-architecture/README.md) | Rendering strategies, state management, micro-frontends, bundlers, meta-frameworks, CSS architecture, design systems, PWA, performance, testing, monorepo, a11y, Wasm. |
 
 ---
 
