@@ -5,151 +5,29 @@ Modern web frontends are fully fledged client-side applications running on distr
 ---
 
 ## 🗺️ Table of Contents
-1. [Rendering Strategies](#1-rendering-strategies)
-   - [Client-Side Rendering (CSR)](#client-side-rendering-csr)
-   - [Server-Side Rendering (SSR)](#server-side-rendering-ssr)
-   - [Static Site Generation (SSG)](#static-site-generation-ssg)
-   - [Incremental Static Regeneration (ISR)](#incremental-static-regeneration-isr)
-2. [Rendering Performance Matrix](#2-rendering-performance-matrix)
-3. [CSR vs. SSR Execution Lifecycles](#3-csr-vs-ssr-execution-lifecycles)
-4. [State Management Patterns](#4-state-management-patterns)
-   - [Local State](#local-state)
-   - [Global State Patterns](#global-state-patterns)
-   - [Server State (Remote Cache)](#server-state-remote-cache)
-5. [Flux Unidirectional Data Flow](#5-flux-unidirectional-data-flow)
-6. [Server Cache Query Lifecycle](#6-server-cache-query-lifecycle)
+1. [Rendering Strategies](./rendering-strategies.md) — CSR, SSR, SSG, ISR with performance matrix and lifecycle diagrams
+2. [State Management Patterns](./state-management-patterns.md) — Local, Global (Flux, Atomic, Observable), Server State
+3. [Micro-frontends](./micro-frontends/README.md) — Module Federation, Iframe, Web Components
+4. [Modern/Web Patterns](./modern-web-patterns.md) — Module, Mixin, Provider
+5. [Bundlers & Build](./bundlers-and-build.md) — Vite, Webpack, esbuild, Turbopack
+6. [Meta-Frameworks](./meta-frameworks.md) — Next.js, Nuxt, Remix, SvelteKit
+7. [CSS Architecture](./css-architecture.md) — Tailwind, CSS Modules, CSS-in-JS, Design Tokens
+8. [Design Systems](./design-systems.md) — Component Composition, Storybook
+9. [PWA & Offline](./pwa-offline.md) — Service Workers, Cache API, IndexedDB
+10. [Web Components](./web-components.md) — Custom Elements, Shadow DOM
+11. [Core Web Vitals & Performance](./core-web-vitals.md) — LCP, CLS, INP, lazy loading
+12. [SPA vs MPA](./spa-vs-mpa.md) — Trade-off matrix
+13. [API Client Architecture](./api-client-architecture.md) — Apollo, tRPC, RTK Query, Axios
+14. [FE Testing](./fe-testing.md) — Vitest, Playwright, Cypress
+15. [FE Monorepo](./fe-monorepo.md) — Nx, Turborepo, pnpm workspaces
+16. [Accessibility (a11y)](./accessibility.md) — WCAG, ARIA
+17. [WebAssembly](./webassembly.md) — Wasm in the browser
 
 ---
 
-## 1. Rendering Strategies
+## Rendering Strategies
 
-Deciding where to render HTML—on the user's browser, on the server dynamically, or pre-built at compile time—directly affects performance, SEO capability, and operational costs.
-
-### Client-Side Rendering (CSR)
-
-In a CSR architecture, the server delivers a nearly empty shell HTML file along with a JavaScript script bundle. The browser downloads the JS, boots up the framework engine (React, Angular, Vue), executes API calls to fetch data, and builds the DOM directly inside the client's browser.
-
-- **Use Case**: Rich dashboards, internal SaaS tooling, interactive canvas editors, or post-login user accounts where search engine crawlers do not need indexation.
-- **Pros**:
-  - 🟢 **Instant Transitions**: Once the application has loaded, page switches are virtually instantaneous because no new HTML pages need fetching.
-  - 🟢 **Decoupled Server**: Low server workload—servers just serve static JS/CSS assets, which can be entirely cached on a CDN.
-- **Cons**:
-  - 🔴 **Slow Initial Load**: The user sees a blank screen (first contentful paint is delayed) while massive JS bundles download and execute.
-  - 🔴 **SEO Challenges**: Search engine bots that cannot execute JS reliably will index a blank page.
-
----
-
-### Server-Side Rendering (SSR)
-
-With SSR, every user request to the server triggers a dynamic page build. The server intercepts the request, runs database or API fetches, compiles the data into HTML, and streams the finished page back to the browser. The browser instantly displays the visual HTML, and then downloads a companion JS bundle to **hydrate** the page (attaching JS event listeners to make static HTML interactive).
-
-- **Use Case**: E-commerce catalog pages, public marketing blogs, or social networks where content changes rapidly and SEO indexation is mandatory.
-- **Pros**:
-  - 🟢 **Excellent SEO**: Crawlers receive pre-rendered HTML immediately.
-  - 🟢 **Fast Initial Load**: Users see content rapidly (FCP) because they don't have to wait for client-side JS to execute.
-- **Cons**:
-  - 🔴 **Server Overhead**: High server CPU loads since every page request requires dynamic server-side rendering.
-  - 🔴 **Hydration Gap**: Users can see the content but cannot click buttons or interact with menus until the hydration JS executes (interactive lock).
-
----
-
-### Static Site Generation (SSG)
-
-SSG compiles all application pages into static HTML, JS, and CSS files **at build-time** (when building the project for deployment). These static files are uploaded directly to a CDN for instant edge-delivery.
-
-- **Use Case**: Documentation portals, marketing homepages, static blogs, or portfolios where data changes infrequently.
-- **Pros**:
-  - 🟢 **Lightning Speed**: Edge CDN delivery yields sub-100ms TTFB (Time to First Byte).
-  - 🟢 **Operational Zero-Ops**: Minimal host overhead, immune to high-traffic database connection exhaustion.
-- **Cons**:
-  - 🔴 **Build Bottlenecks**: A site with 10,000 products will require hours to compile at build time.
-  - 🔴 **Stale Data**: Updating a spelling error requires rebuilding and redeploying the entire project.
-
----
-
-### Incremental Static Regeneration (ISR)
-
-ISR is a hybrid strategy designed to bring the speed of SSG to massive sites. Pages are initially generated at build-time. However, when a request is made for a stale page, the CDN serves the cached static page instantly, while initiating a background rebuild of that single page. Once compiled, the edge cache is refreshed.
-
-- **Use Case**: Large e-commerce catalogs or news sites containing millions of pages.
-- **Pros**:
-  - 🟢 **Fast & Scalable**: Retains CDN delivery speeds while allowing millions of dynamic pages to exist without rebuild bottlenecks.
-  - 🟢 **Self-Healing State**: Background generation ensures data remains fresh without global deployment runs.
-- **Cons**:
-  - 🔴 **Stale-While-Revalidate**: The very first user to request a modified page will still see old, stale data.
-
----
-
-## 2. Rendering Performance Matrix
-
-Architects should evaluate rendering choices using core performance indicators:
-
-| Strategy | TTFB | FCP | LCP | TTI | SEO Profile | Server Load | Data Freshness |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **CSR** | 🟢 Fast (Static CDN) | 🔴 Slow (Blank screen) | 🔴 Slow (JS dependant) | 🔴 Slow (Hydration/boot) | 🔴 Poor | 🟢 Low (Client-side) | 🟢 Real-time (API calls) |
-| **SSR** | 🔴 Slow (Server compile) | 🟢 Fast (Visual HTML) | 🟢 Fast (Visual HTML) | 🟡 Medium (Hydration gap) | 🟢 Excellent | 🔴 High (On-demand CPU) | 🟢 Real-time (On-request) |
-| **SSG** | 🟢 Extremely Fast (CDN) | 🟢 Extremely Fast (CDN) | 🟢 Extremely Fast (CDN) | 🟢 Extremely Fast | 🟢 Excellent | 🟢 Extremely Low | 🔴 Stale (Build bound) |
-| **ISR** | 🟢 Extremely Fast (CDN) | 🟢 Extremely Fast (CDN) | 🟢 Extremely Fast (CDN) | 🟢 Extremely Fast | 🟢 Excellent | 🟡 Low-Medium (Background) | 🟡 Near Real-time (Lazy) |
-
----
-
-## 3. CSR vs. SSR Execution Lifecycles
-
-The sequence diagrams below illustrate the differing client-server lifecycles between CSR and SSR, highlighting the "Hydration Gap" where the user can see elements but cannot interact with them.
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User as 👤 User Browser
-    participant Server as 🌐 CDN / static server
-    participant API as 🔌 Backend API
-
-    Note over User, Server: Client-Side Rendering (CSR) Lifecycle
-    
-    User->>Server: 1. Request Page (GET /dashboard)
-    Server-->>User: 2. Return Empty HTML Shell + JS Bundle Links
-    Note over User: User sees a completely blank screen!
-    
-    rect rgb(220, 240, 255)
-        Note over User: 3. Download & Parse JavaScript Bundle
-        User->>API: 4. Request App Data (GET /api/user)
-        API-->>User: 5. Return JSON payload
-        Note over User: 6. Mount DOM & Render Page Content
-    end
-    
-    Note over User: Page becomes fully visible and interactive!
-```
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User as 👤 User Browser
-    participant Server as 🌐 Dynamic Server (Node/SSR)
-    participant API as 🔌 Backend API
-
-    Note over User, Server: Server-Side Rendering (SSR) Lifecycle
-    
-    User->>Server: 1. Request Page (GET /product-xyz)
-    
-    rect rgb(255, 235, 235)
-        Note over Server: 2. Fetch Data before rendering
-        Server->>API: 3. Fetch Product Details (GET /api/product/xyz)
-        API-->>Server: 4. Return Product JSON
-        Note over Server: 5. Compile Product + Data into Complete HTML
-    end
-    
-    Server-->>User: 6. Stream Complete HTML Page
-    Note over User: FCP: User instantly sees full page layout!
-    
-    rect rgb(255, 248, 220)
-        Note over User: [Hydration Gap] User clicks buttons but nothing happens.<br/>Downloading Hydration JavaScript in background...
-        User->>Server: 7. Fetch Hydration JS
-        Server-->>User: 8. Return JS Bundle
-        Note over User: 9. Execute JS & Attach Event Listeners to DOM
-    end
-    
-    Note over User: Hydration Complete: Page becomes interactive!
-```
+Covered in **[Rendering Strategies](./rendering-strategies.md)** — CSR, SSR, SSG, ISR with performance matrix and sequence diagrams.
 
 ---
 
