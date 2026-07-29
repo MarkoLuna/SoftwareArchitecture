@@ -381,3 +381,6 @@ flowchart LR
 | ⚠️ **Single consumer bottleneck** | If the consumer is slow, the queue grows. Scale with competing consumers in the same group. |
 | ⚠️ **Message ordering** | Messages from different producers are interleaved; ordering guarantees require partition keys (Kafka) or sequencing logic in the consumer. |
 | ❌ **Source attribution** | The consumer must inspect message metadata/headers to determine which producer sent a given message. |
+
+> [!NOTE]
+> **[🧩 Micro-frontends](../frontend-architecture/micro-frontends/README.md)** — frontend-focused architectural patterns (Module Federation, Iframe, Web Components) have moved to the **[Frontend Architecture](../frontend-architecture/README.md)** section.
