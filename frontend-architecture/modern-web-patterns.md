@@ -74,4 +74,4 @@ export const ThemeButton = () => {
 
 ---
 
-[⬅️ Back to Design Patterns](./README.md)
+[⬅️ Back to Frontend Architecture](./README.md)
