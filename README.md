@@ -62,3 +62,4 @@ Welcome to the **Software Architecture Documentation** repository. This project 
 | :--- | :--- |
 | [☕ Java Upgrades](./language-guides/java-upgrades.md) | Significant changes from JDK 8 to JDK 21. |
 | [🐹 Go Upgrades](./language-guides/go-upgrades.md) | Key features and philosophy from 1.11 to 1.22. |
+| [📘 TypeScript Architecture](./language-guides/typescript-architecture.md) | Discriminated unions, branded types, module architecture, and TS config strategies. |
