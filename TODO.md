@@ -55,11 +55,21 @@ This document tracks the planned improvements and missing sections for the Softw
 ## 🖥️ Frontend Architecture
 - [x] **Rendering Strategies**: Compare CSR, SSR, SSG, and ISR.
 - [x] **State Management**: Patterns for global, local, and server state in frontend apps.
-- [ ] **Progressive Web Apps (PWA)**: Service workers, caching strategies, and offline capabilities.
-- [ ] **WebAssembly (Wasm)**: High-performance computing in the browser, bridging frontend and backend code.
-- [ ] **Web Components**: Framework-agnostic, reusable UI components using Shadow DOM and Custom Elements.
-- [ ] **Core Web Vitals & Performance**: Strategies for optimizing LCP, CLS, INP, and bundle sizes.
-- [ ] **Accessibility (a11y)**: Deep dive into WCAG standards, ARIA roles, and inclusive design patterns.
+- [x] **Modern/Web Patterns**: Module, Mixin, and Provider patterns for frontend composition.
+- [x] **Micro-frontends**: Module Federation, Iframe, and Web Components integration strategies.
+- [x] **Bundlers & Build**: Vite, Webpack, esbuild, Turbopack comparison.
+- [x] **Meta-Frameworks**: Next.js, Nuxt, Remix, SvelteKit deep-dive.
+- [x] **CSS Architecture**: Tailwind, CSS Modules, CSS-in-JS, BEM, design tokens.
+- [x] **Design Systems**: Component composition, Provider pattern, Storybook.
+- [x] **PWA & Offline**: Service workers, caching strategies (Cache First, Network First, stale-while-revalidate), IndexedDB.
+- [x] **Core Web Vitals & Performance**: LCP, CLS, INP, lazy loading, bundle optimization.
+- [x] **SPA vs MPA**: Decision matrix and hybrid approaches.
+- [x] **API Client Architecture**: Fetch, Axios, tRPC, RTK Query, Apollo, TanStack Query.
+- [x] **FE Testing**: Vitest, Playwright, Cypress, visual regression, a11y testing.
+- [x] **FE Monorepo**: Nx, Turborepo, pnpm workspaces.
+- [x] **Accessibility (a11y)**: WCAG (POUR), ARIA, keyboard accessibility.
+- [x] **WebAssembly (Wasm)**: Emscripten, wasm-pack, browser integration.
+- [x] **TypeScript Architecture**: Discriminated unions, branded types, module architecture, project configuration.
 
 ## 🔐 Advanced Security
 - [x] **OAuth2 & OIDC**: Detailed flows and implementation best practices.

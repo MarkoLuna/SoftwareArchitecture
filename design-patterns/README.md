@@ -18,9 +18,8 @@ Design patterns are documented solutions to common software engineering problems
     *Focus on object interaction and responsibility.*
     - Observer, Strategy, Command, Iterator, Mediator, Memento, and more.
 
-4.  **[🌐 Modern/Web Patterns](./modern-web-patterns.md)**
-    *Focus on frontend and modern web architectures.*
-    - Module, Mixin, Provider.
+> [!NOTE]
+> **[🌐 Modern/Web Patterns](../frontend-architecture/modern-web-patterns.md)** (Module, Mixin, Provider) have moved to the **[Frontend Architecture](../frontend-architecture/README.md)** section.
 
 ---
 

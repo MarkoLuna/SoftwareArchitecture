@@ -36,7 +36,14 @@ Welcome to the **Software Architecture Documentation** repository. This project 
 | [🛠️ Infrastructure & Ops](./infrastructure-ops/README.md) | Best practices for building, deploying, monitoring, and scaling. |
 | [🌊 Data Streaming](./data-streaming/README.md) | Real-time processing frameworks (Kafka Streams, Flink, Spark, Samza). |
 | [🔍 Search & Query](./search-query-optimization/README.md) | Search engines (Elasticsearch, Solr, Meilisearch, Algolia) & sync strategies. |
-| [🖥️ Frontend Arch](./frontend-architecture/README.md) | Rendering strategies (CSR, SSR, SSG, ISR) & state management patterns. |
+
+---
+
+## 🖥️ Frontend Architecture
+
+| Topic | Description |
+| :--- | :--- |
+| [🖥️ Frontend Arch](./frontend-architecture/README.md) | Rendering strategies, state management, micro-frontends, bundlers, meta-frameworks, CSS architecture, design systems, PWA, performance, testing, monorepo, a11y, Wasm. |
 
 ---
 
@@ -55,3 +62,4 @@ Welcome to the **Software Architecture Documentation** repository. This project 
 | :--- | :--- |
 | [☕ Java Upgrades](./language-guides/java-upgrades.md) | Significant changes from JDK 8 to JDK 21. |
 | [🐹 Go Upgrades](./language-guides/go-upgrades.md) | Key features and philosophy from 1.11 to 1.22. |
+| [📘 TypeScript Architecture](./language-guides/typescript-architecture.md) | Discriminated unions, branded types, module architecture, and TS config strategies. |
