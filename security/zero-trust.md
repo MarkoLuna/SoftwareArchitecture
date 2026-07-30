@@ -29,6 +29,10 @@ To prevent lateral movement inside a network if one service is compromised, arch
 
 - **mTLS (Mutual TLS)**: Unlike standard TLS where only the server proves its identity to the client, mTLS requires *both* the client and server to present and verify cryptographic X.509 certificates. This establishes a highly secure, encrypted channel where both sides are verified.
 - **Cryptographic Workload Identity**: Services are assigned cryptographic identities (e.g., utilizing **SPIFFE/SPIRE** standard). Certificates are ephemeral and rotated automatically (e.g., every few hours) by local agents, completely eliminating the need for hardcoded, static database credentials or API keys.
+  - [SPIFFE Specification](https://github.com/spiffe/spiffe)
+  - [SPIRE Project (CNCF)](https://spiffe.io/spire/)
+  - [SPIFFE/SPIRE Quickstart](https://spiffe.io/docs/latest/try/getting-started-k8s/)
+  - [SPIFFE Standards Overview](https://spiffe.io/docs/latest/spiffe-about/)
 - **Microsegmentation**: By combining mTLS with application layer policies (such as Istio Authorization Policies), you can enforce strict, granular network boundaries. For instance, you can state: *Service B can receive POST requests from Service A, but all traffic from Service C must be blocked.*
 
 ---
