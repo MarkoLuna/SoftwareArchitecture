@@ -29,7 +29,7 @@ Welcome to the **Software Architecture Documentation** repository. This project 
 | [🛡️ Resilience Patterns](./resilience-patterns/README.md) | Strategies for fault tolerance and system stability. |
 | [☁️ Cloud-Native](./cloud-native/kubernetes.md) | Kubernetes orchestration, Pods, Controllers, and Services. |
 | [☁️ Modern Cloud Methodologies](./modern-cloud-methodologies/README.md) | 12-Factor App principles and Serverless Architectures (FaaS). |
-| [🔒 Security Patterns](./security/README.md) | Best practices for AuthN, AuthZ, and OWASP. |
+| [🔒 Security Patterns](./security/README.md) | OAuth2, OIDC, SAML, SCIM, JWT, Zero Trust, IdP comparison, and OWASP. |
 | [🏷️ Versioning & Workflow](./versioning/README.md) | Strategies for versioning and commit standards. |
 | [🧪 Testing Strategies](./testing-strategies/README.md) | Ensuring quality and reliability across the stack. |
 | [🗄️ Data & Storage](./data-storage/README.md) | Database design, indexing, partitioning, and replication. |

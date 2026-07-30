@@ -167,6 +167,24 @@ The process of verifying the identity of a user, process, or device.
 ### **Authorization**
 The process of determining what permissions an authenticated entity has.
 
+### **OAuth 2.0**
+An industry-standard delegation framework that allows a third-party application to obtain limited access to an HTTP service on behalf of a resource owner.
+
+### **OpenID Connect (OIDC)**
+An identity layer built on top of OAuth 2.0 that adds authentication through an ID Token (JWT) containing user identity claims.
+
+### **SAML 2.0 (Security Assertion Markup Language)**
+An XML-based federated identity standard for exchanging authentication and authorization data between an Identity Provider and a Service Provider, commonly used in enterprise SSO.
+
+### **SCIM 2.0 (System for Cross-domain Identity Management)**
+A RESTful API standard for automating the exchange of user identity data between identity domains, covering the full user provisioning lifecycle.
+
+### **JWT (JSON Web Token)**
+A compact, URL-safe token format (RFC 7519) for representing claims between two parties. Used as access tokens, ID tokens, and refresh tokens.
+
+### **JWKS (JSON Web Key Set)**
+A set of public keys published by an Identity Provider, used by clients and resource servers to verify the cryptographic signature of JWTs.
+
 ### **Caching**
 The process of storing data in a cache so that future requests for that data can be served faster.
 
