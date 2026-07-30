@@ -105,19 +105,25 @@ This assertion is signed with the client's private key and sent as the `client_a
 
 For devices without a browser or with limited input (smart TVs, CLI tools, IoT).
 
-```
-Client                 Auth Server                 User's Browser
-  |                         |                           |
-  |-- POST /device          |                           |
-  |   device_code,          |                           |
-  |   user_code,            |                           |
-  |   verification_uri      |                           |
-  |<------------------------|                           |
-  |                         |                           |
-  |-- (polling) POST /token |-- User visits URI         |
-  |   device_code           |   enters user_code        |
-  |                         |   authenticates           |
-  |<-- access_token --------|                           |
+```mermaid
+sequenceDiagram
+    participant Client as 📱 Client (Device)
+    participant AuthServer as 🔑 Auth Server
+    participant Browser as 🌐 User's Browser
+
+    Client->>AuthServer: POST /device (client_id, scope)
+    AuthServer-->>Client: device_code, user_code, verification_uri
+
+    Note over Client: Polling every few seconds
+    loop Poll token endpoint
+        Client->>AuthServer: POST /token (grant_type=device_code, device_code)
+    end
+
+    Browser->>AuthServer: Visits verification_uri
+    Browser->>AuthServer: Enters user_code
+    Browser->>AuthServer: Authenticates & consents
+
+    AuthServer-->>Client: access_token + refresh_token (polling succeeds)
 ```
 
 The client polls the token endpoint until the user completes authorization or the code expires.

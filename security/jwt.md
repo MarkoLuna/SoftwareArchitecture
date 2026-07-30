@@ -78,14 +78,16 @@ The Identity Provider should rotate signing keys periodically to limit the impac
 3. **Retire old key**: Remove the old key from JWKS once all tokens signed with it have expired
 4. **Cache-aware clients**: Clients should cache JWKS with TTL and re-fetch on signature validation failure
 
-```
-Timeline:
-Key-1 published ────────────────────────────────────────────────────
-                     Key-2 published ─────────────────────────────────
-                                            Key-1 removed
-                         ^                ^
-                   Tokens signed     Old tokens expire,
-                   with Key-2        clients re-fetch JWKS
+```mermaid
+flowchart LR
+    subgraph Timeline
+        direction LR
+        A[Key-1 published] --> B[Key-2 published]
+        B --> C[Key-1 removed from JWKS]
+    end
+
+    B -.-> E1[Tokens signed with Key-2]
+    C -.-> E2[Old tokens expire, clients re-fetch JWKS]
 ```
 
 ### Automated Rotation
@@ -135,12 +137,26 @@ To prevent replay attacks and detect stolen refresh tokens:
 2. The server maintains token families (grouping refresh tokens from the same initial authentication).
 3. If an attacker replays $RT_1$ after the legitimate client already exchanged it, the server detects reuse and revokes the **entire family** — forcing re-authentication.
 
-```
-Legitimate Flow:
-[ Client ] ──(Sends RT-1)──> [ Auth Server ] ──(Issues RT-2 + AT-2 & Invalidates RT-1)──> [ Client ]
+```mermaid
+sequenceDiagram
+    participant Client as ✅ Legitimate Client
+    participant AS as 🔑 Auth Server
+    participant Attacker as ❌ Attacker
 
-Attack Flow (Replaying RT-1):
-[ Attacker ] ──(Sends RT-1)──> [ Auth Server ] ──(Detects Reuse!) ──> [ Revokes ALL Family Tokens! ]
+    rect rgb(200, 255, 200)
+        Note over Client,AS: Legitimate Flow
+        Client->>AS: Send RT-1
+        AS->>AS: Validate & rotate
+        AS-->>Client: Issue RT-2 + AT-2 (RT-1 invalidated)
+    end
+
+    rect rgb(255, 200, 200)
+        Note over Attacker,AS: Attack — RT-1 replayed
+        Attacker->>AS: Send RT-1 (stolen, already used)
+        AS->>AS: Detect RT-1 reuse!
+        AS->>AS: Revoke entire token family!
+        AS-->>Attacker: Request rejected, re-authentication required
+    end
 ```
 
 ---
