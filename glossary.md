@@ -167,6 +167,62 @@ The process of verifying the identity of a user, process, or device.
 ### **Authorization**
 The process of determining what permissions an authenticated entity has.
 
+### **OAuth 2.0**
+An industry-standard delegation framework that allows a third-party application to obtain limited access to an HTTP service on behalf of a resource owner.
+
+### **OpenID Connect (OIDC)**
+An identity layer built on top of OAuth 2.0 that adds authentication through an ID Token (JWT) containing user identity claims.
+
+### **SAML 2.0 (Security Assertion Markup Language)**
+An XML-based federated identity standard for exchanging authentication and authorization data between an Identity Provider and a Service Provider, commonly used in enterprise SSO.
+
+### **SCIM 2.0 (System for Cross-domain Identity Management)**
+A RESTful API standard for automating the exchange of user identity data between identity domains, covering the full user provisioning lifecycle.
+
+### **JWT (JSON Web Token)**
+A compact, URL-safe token format (RFC 7519) for representing claims between two parties. Used as access tokens, ID tokens, and refresh tokens.
+
+### **JWKS (JSON Web Key Set)**
+A set of public keys published by an Identity Provider, used by clients and resource servers to verify the cryptographic signature of JWTs.
+
+### **Asymmetric Encryption**
+A cryptographic system using a pair of keys — a public key for encryption and a private key for decryption (or vice versa for signing). Used in JWT signing (RS256, ES256), TLS handshake, and mTLS. Unlike symmetric encryption, the private key is never shared.
+
+### **Symmetric Encryption**
+A cryptographic system where the same secret key is used for both encryption and decryption. Used in JWT signing (HS256), TLS session encryption, and local data encryption. Requires secure key distribution between parties.
+
+### **ECDSA (Elliptic Curve Digital Signature Algorithm)**
+An asymmetric signing algorithm using elliptic curve cryptography. Provides equivalent security to RSA with smaller key sizes and faster computation. Used in JWT (ES256, ES384), TLS certificates, and blockchain. Preferred over RSA in modern systems.
+
+### **Active Directory (AD)**
+Microsoft's directory service for Windows domain networks. Stores user accounts, groups, devices, and policies. Commonly used as a user store by Identity Providers via LDAP or Kerberos federation.
+
+### **IdP (Identity Provider)**
+A system that creates, maintains, and manages identity information and provides authentication services to relying applications. Examples: Keycloak, Okta, Azure AD, Authentik, FusionAuth.
+
+### **Kerberos**
+A network authentication protocol using tickets and symmetric-key cryptography. Allows nodes to prove their identity securely over a non-secure network. Commonly used with Active Directory. Port 88.
+
+### **LDAP (Lightweight Directory Access Protocol)**
+An open, vendor-neutral protocol for accessing and maintaining distributed directory information services. Used to query and modify user records in directories like Active Directory, OpenLDAP, or 389 DS. Port 389 (LDAP) / 636 (LDAPS).
+
+### **M2M (Machine-to-Machine)**
+A communication pattern where two services interact without a human user. In OAuth2, the Client Credentials grant is designed for M2M scenarios — the client authenticates using its own credentials (not a user's).
+
+### **SLA (Service Level Agreement)**
+A formal contract defining the expected level of service between a provider and a consumer. Common metrics: uptime percentage (99.9%), latency percentiles (p99 < 200ms), error rate, throughput.
+
+### **SLO (Service Level Objective) / Single Logout (SAML/OIDC)**
+*Context-dependent*: In operations, SLO is a target reliability metric (e.g., 99.9% uptime over a quarter). In security, SLO refers to Single Logout — a SAML/OIDC profile that terminates a user's session across all Service Providers when the user logs out from one.
+
+### **SPIFFE (Secure Production Identity Framework for Everyone)**
+A standard (CNCF) for issuing cryptographic identities to workloads (services, containers, VMs). Uses a URI format `spiffe://trust-domain/workload/path`. The SPIFFE Runtime Environment (SPIRE) is a reference implementation that attests workloads and issues SVIDs (SPIFFE Verifiable Identity Documents) as X.509 or JWT tokens.
+
+  - [SPIFFE Specification (GitHub)](https://github.com/spiffe/spiffe)
+  - [SPIRE Project (CNCF)](https://spiffe.io/spire/)
+  - [SPIFFE/SPIRE Quickstart](https://spiffe.io/docs/latest/try/getting-started-k8s/)
+  - [SPIFFE Standards Overview](https://spiffe.io/docs/latest/spiffe-about/)
+
 ### **Caching**
 The process of storing data in a cache so that future requests for that data can be served faster.
 
@@ -180,7 +236,11 @@ Controlling the rate of requests sent or received by an application or user.
 The process of limiting the number of requests a user can make within a certain time period.
 
 ### **TLS/SSL (Transport Layer Security/Secure Sockets Layer)**
-Cryptographic protocols that provide communications security over a computer network.
+Cryptographic protocols that provide communications security over a computer network. TLS (the modern standard, replacing SSL) enables encryption, authentication, and integrity for data in transit. Used in HTTPS (port 443), mTLS (mutual authentication), and secure API communication.
+
+  - **Key Exchange**: Asymmetric cryptography (RSA, ECDHE) to establish a shared session key
+  - **Session Encryption**: Symmetric cipher (AES-GCM, ChaCha20) for bulk data
+  - **Handshake**: Client and server negotiate TLS version, cipher suite, and exchange certificates (X.509)
 
 ---
 
@@ -191,7 +251,7 @@ Cryptographic protocols that provide communications security over a computer net
 | **Architecture** | Microservices, Monolith, Serverless | System design decisions |
 | **Data** | ACID, BASE, CAP Theorem | Database selection |
 | **Operations** | CI/CD, IaC, Auto-scaling | DevOps practices |
-| **Security** | Authentication, Authorization, TLS | Security implementation |
+| **Security** | OAuth2, OIDC, SAML, SCIM, JWT, JWKS, LDAP, Kerberos, AD, IdP, ECDSA, mTLS, SPIFFE, Zero Trust | AuthN/AuthZ implementation |
 
 ---
 

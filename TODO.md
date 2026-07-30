@@ -75,6 +75,9 @@ This document tracks the planned improvements and missing sections for the Softw
 - [x] **OAuth2 & OIDC**: Detailed flows and implementation best practices.
 - [x] **JWT Best Practices**: Signing, encryption, expiration, and revocation.
 - [x] **Zero Trust Architecture**: Principles of 'never trust, always verify'.
+- [x] **SAML 2.0**: SAML assertions, bindings, metadata exchange, and comparison vs OIDC.
+- [x] **SCIM 2.0**: User/Group schema, provisioning lifecycle, REST endpoints.
+- [x] **Implementation Checklist**: Go-live reference with endpoint/config checklists, common pitfalls, and testing strategy.
 
 ## 🔍 Search & Query Optimization
 - [x] **Full-Text Search Engines**: Document query optimization using Elasticsearch and alternatives (e.g., Apache Solr, Meilisearch, Algolia). Must include Mermaid diagrams illustrating how the search engine integrates alongside a primary database and an existing API.
