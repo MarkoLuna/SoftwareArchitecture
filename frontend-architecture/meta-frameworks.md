@@ -2,6 +2,9 @@
 
 Meta-frameworks are full-stack frameworks built on top of UI libraries (React, Vue, Svelte) that provide routing, data fetching, build configuration, and deployment strategies out of the box.
 
+> [!TIP]
+> Choosing between a UI library alone and a full meta-framework? See [React.js vs Next.js](./react-vs-nextjs.md) for a decision guide.
+
 ---
 
 ## Next.js (React)

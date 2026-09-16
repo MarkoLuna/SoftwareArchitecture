@@ -242,6 +242,21 @@ Cryptographic protocols that provide communications security over a computer net
   - **Session Encryption**: Symmetric cipher (AES-GCM, ChaCha20) for bulk data
   - **Handshake**: Client and server negotiate TLS version, cipher suite, and exchange certificates (X.509)
 
+### **React.js**
+A JavaScript library focused on building user interfaces, typically as client-side rendered (CSR) Single Page Applications. Alone it requires external solutions for routing, data fetching, and server-side rendering.
+
+### **Next.js**
+A React meta-framework that adds built-in routing, SSR/SSG/ISR, Server Components, server actions, SEO tooling, and image optimization on top of React. See [React.js vs Next.js](./frontend-architecture/react-vs-nextjs.md) for a decision guide.
+
+### **SSR (Server-Side Rendering)**
+Rendering an application's HTML on the server per-request and sending it to the browser, improving initial load and SEO at the cost of server CPU.
+
+### **SSG (Static Site Generation)**
+Pre-building HTML pages at build time and serving them as static assets, giving fast edge delivery for content that rarely changes.
+
+### **ISR (Incremental Static Regeneration)**
+A hybrid strategy that serves pre-built static pages while regenerating stale pages in the background, keeping large sites fast and fresh.
+
 ---
 
 ## 📖 Quick Reference

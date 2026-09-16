@@ -23,6 +23,7 @@ Modern web frontends are fully fledged client-side applications running on distr
 15. [FE Monorepo](./fe-monorepo.md) — Nx, Turborepo, pnpm workspaces
 16. [Accessibility (a11y)](./accessibility.md) — WCAG, ARIA
 17. [WebAssembly](./webassembly.md) — Wasm in the browser
+18. [React.js vs Next.js](./react-vs-nextjs.md) — Decision guide and trade-off matrix
 
 ---
 

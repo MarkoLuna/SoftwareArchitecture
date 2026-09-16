@@ -70,6 +70,7 @@ This document tracks the planned improvements and missing sections for the Softw
 - [x] **Accessibility (a11y)**: WCAG (POUR), ARIA, keyboard accessibility.
 - [x] **WebAssembly (Wasm)**: Emscripten, wasm-pack, browser integration.
 - [x] **TypeScript Architecture**: Discriminated unions, branded types, module architecture, project configuration.
+- [x] **React.js vs Next.js**: Decision guide comparing the library alone vs the meta-framework, with architecture diagrams and trade-off matrix.
 
 ## 🔐 Advanced Security
 - [x] **OAuth2 & OIDC**: Detailed flows and implementation best practices.

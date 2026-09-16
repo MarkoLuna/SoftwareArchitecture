@@ -2,6 +2,9 @@
 
 Deciding where to render HTML—on the user's browser, on the server dynamically, or pre-built at compile time—directly affects performance, SEO capability, and operational costs.
 
+> [!TIP]
+> Want to weigh SSR/SSG against a client-only setup at a higher level? See [React.js vs Next.js](./react-vs-nextjs.md).
+
 ---
 
 ## Client-Side Rendering (CSR)
